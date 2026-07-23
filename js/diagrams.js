@@ -7,8 +7,8 @@
   'use strict';
 
   const C = {
-    ink: '#191d23', muted: '#6b7280', line: '#c9c5bc',
-    amber: '#f59e0b', amberSoft: 'rgba(245,158,11,.22)',
+    ink: '#1c1c1c', muted: '#6b7c93', line: '#c9c5bc',
+    amber: '#ffc300', amberSoft: 'rgba(255,195,0,.22)',
     red: '#dc2626', blue: '#bfdbfe', blueDeep: '#1d4ed8',
     green: '#bbf7d0', pink: '#fecaca', gray: '#cbd5e1',
     car: '#20242b', paper: '#ffffff'

@@ -8,6 +8,10 @@ let js = files.map(f => fs.readFileSync(f, 'utf8')).join('\n;\n');
 js = js.replace(/<\/script/g, '<\\/script');
 const html = `<title>GMP Access — Installer Academy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2323ad5e'/><rect x='30' y='34' width='12' height='38' rx='4' fill='%23ffc300'/><rect x='26' y='24' width='48' height='11' rx='4' fill='%23ffc300' transform='rotate(-16 50 30)'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@500;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap">
 <style>${css}</style>
 <div class="app">
   <nav class="rail no-print" id="rail" aria-label="Main navigation"></nav>

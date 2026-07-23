@@ -8,6 +8,16 @@
   const D = window.DIAGRAMS;
   const $ = sel => document.querySelector(sel);
 
+  /* GMP pin + gate-arm mark — same shape language as GMP's own product icons
+     (a location pin containing a glyph unique to the product; gate-arm = Access). */
+  const LOGO_MARK = `<svg viewBox="0 0 100 100" role="img" aria-label="GMP Access">
+    <path d="M50 6C29 6 13 22 13 43c0 27 37 51 37 51s37-24 37-51C87 22 71 6 50 6z" fill="#23ad5e"/>
+    <g transform="translate(50,42)">
+      <rect x="-5" y="-16" width="10" height="30" rx="3" fill="#ffc300"/>
+      <rect x="-3" y="-24" width="26" height="8" rx="3" fill="#ffc300" transform="rotate(-18)"/>
+    </g>
+  </svg>`;
+
   /* ---------- persistent state ---------- */
   const KEY = 'gmpAcademyV1';
   let state;
@@ -61,7 +71,7 @@
   ];
   function renderRail(hash) {
     const rail = $('#rail');
-    let h = `<a class="rail-logo" href="#/" title="GMP Access Installer Academy">GMP</a>`;
+    let h = `<a class="rail-logo" href="#/" title="GMP Access Installer Academy">${LOGO_MARK}</a>`;
     RAIL.forEach(r => {
       const active = r.match(hash);
       if (r.panel) h += `<button class="rail-item${active ? ' active' : ''}" id="railModules" title="Browse all modules"><span class="ri">${UI(r.ico, 19)}</span>${r.label}</button>`;

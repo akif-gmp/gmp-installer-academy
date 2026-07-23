@@ -5,10 +5,10 @@
 (function () {
   'use strict';
   const C = {
-    ink: '#191d23', muted: '#6b7280', line: '#c9c5bc',
-    amber: '#f59e0b', amberDeep: '#b45309', amberSoft: 'rgba(245,158,11,.18)',
-    red: '#dc2626', green: '#15803d', greenSoft: '#dcfce7',
-    blue: '#1d4ed8', blueSoft: '#dbeafe', paper: '#ffffff', dark: '#20242b',
+    ink: '#1c1c1c', muted: '#6b7c93', line: '#c9c5bc',
+    amber: '#ffc300', amberDeep: '#8a6a00', amberSoft: 'rgba(255,195,0,.2)',
+    red: '#dc2626', green: '#23ad5e', greenSoft: '#e2f1ec',
+    blue: '#1d4ed8', blueSoft: '#dbeafe', paper: '#ffffff', dark: '#1c1c1c',
     graySoft: '#eeece7'
   };
   const DEFS = `<defs>
