@@ -238,6 +238,21 @@
     return { crumb: `${m.code} · <b>Knowledge check</b>`, html: h };
   }
   let examStarted = false;
+  let examQuestions = null;
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function shuffleExamQuestions() {
+    return shuffle(A.exam).map(q => {
+      const order = shuffle(q.options.map((_, i) => i));
+      return Object.assign({}, q, { options: order.map(i => q.options[i]), answer: order.indexOf(q.answer) });
+    });
+  }
   function viewExam() {
     let h = `<span class="kicker">Final validation</span><h2 class="page-title">${esc(A.examMeta.title)}</h2>
     <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. Pass mark: ${A.examMeta.pass}%.</p>`;
@@ -254,9 +269,10 @@
       </div>`;
       return { crumb: '<b>Final Readiness Exam</b>', html: h };
     }
-    quizRun = { mid: 'exam', questions: A.exam, answers: new Array(A.exam.length).fill(null) };
+    if (!examQuestions) examQuestions = shuffleExamQuestions();
+    quizRun = { mid: 'exam', questions: examQuestions, answers: new Array(examQuestions.length).fill(null) };
     h += `<div class="exam-live-bar"><span>Focused session in progress — answer all ${A.exam.length} questions.</span><button class="btn small ghost" data-action="abandon-exam">Abandon attempt</button></div>`;
-    h += quizBody(A.exam);
+    h += quizBody(examQuestions);
     return { crumb: '<b>Final Readiness Exam · in progress</b>', html: h };
   }
   function quizBody(questions) {
@@ -298,7 +314,7 @@
       const passed = pct >= A.examMeta.pass;
       const prev = state.exam || { best: 0, passed: false };
       const integrity = window.PROCTOR ? window.PROCTOR.stop('finished') : null;
-      examStarted = false;
+      examStarted = false; examQuestions = null;
       state.exam = { best: Math.max(prev.best, pct), passed: prev.passed || passed, integrity };
       save();
       if (A.adminHooks) A.adminHooks.recordResult({
@@ -522,7 +538,7 @@
     const abandon = e.target.closest('[data-action="abandon-exam"]');
     if (abandon) {
       const integrity = window.PROCTOR ? window.PROCTOR.stop('abandoned') : null;
-      examStarted = false; quizRun = null;
+      examStarted = false; quizRun = null; examQuestions = null;
       if (A.adminHooks) A.adminHooks.recordResult({
         kind: 'exam', name: state.profile && state.profile.name, email: state.profile && state.profile.email,
         score: 0, total: A.exam.length, pct: 0, integrity, ts: Date.now()

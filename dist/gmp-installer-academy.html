@@ -1,5 +1,6 @@
 <title>GMP Access — Installer Academy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2323ad5e'/><rect x='30' y='34' width='12' height='38' rx='4' fill='%23ffc300'/><rect x='26' y='24' width='48' height='11' rx='4' fill='%23ffc300' transform='rotate(-16 50 30)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -5264,6 +5265,21 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     return { crumb: `${m.code} · <b>Knowledge check</b>`, html: h };
   }
   let examStarted = false;
+  let examQuestions = null;
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function shuffleExamQuestions() {
+    return shuffle(A.exam).map(q => {
+      const order = shuffle(q.options.map((_, i) => i));
+      return Object.assign({}, q, { options: order.map(i => q.options[i]), answer: order.indexOf(q.answer) });
+    });
+  }
   function viewExam() {
     let h = `<span class="kicker">Final validation</span><h2 class="page-title">${esc(A.examMeta.title)}</h2>
     <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. Pass mark: ${A.examMeta.pass}%.</p>`;
@@ -5280,9 +5296,10 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       </div>`;
       return { crumb: '<b>Final Readiness Exam</b>', html: h };
     }
-    quizRun = { mid: 'exam', questions: A.exam, answers: new Array(A.exam.length).fill(null) };
+    if (!examQuestions) examQuestions = shuffleExamQuestions();
+    quizRun = { mid: 'exam', questions: examQuestions, answers: new Array(examQuestions.length).fill(null) };
     h += `<div class="exam-live-bar"><span>Focused session in progress — answer all ${A.exam.length} questions.</span><button class="btn small ghost" data-action="abandon-exam">Abandon attempt</button></div>`;
-    h += quizBody(A.exam);
+    h += quizBody(examQuestions);
     return { crumb: '<b>Final Readiness Exam · in progress</b>', html: h };
   }
   function quizBody(questions) {
@@ -5324,7 +5341,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       const passed = pct >= A.examMeta.pass;
       const prev = state.exam || { best: 0, passed: false };
       const integrity = window.PROCTOR ? window.PROCTOR.stop('finished') : null;
-      examStarted = false;
+      examStarted = false; examQuestions = null;
       state.exam = { best: Math.max(prev.best, pct), passed: prev.passed || passed, integrity };
       save();
       if (A.adminHooks) A.adminHooks.recordResult({
@@ -5548,7 +5565,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     const abandon = e.target.closest('[data-action="abandon-exam"]');
     if (abandon) {
       const integrity = window.PROCTOR ? window.PROCTOR.stop('abandoned') : null;
-      examStarted = false; quizRun = null;
+      examStarted = false; quizRun = null; examQuestions = null;
       if (A.adminHooks) A.adminHooks.recordResult({
         kind: 'exam', name: state.profile && state.profile.name, email: state.profile && state.profile.email,
         score: 0, total: A.exam.length, pct: 0, integrity, ts: Date.now()
