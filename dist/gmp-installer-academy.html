@@ -136,6 +136,8 @@ body.panel-open .panel-scrim{display:block;position:fixed;inset:0;z-index:54;bac
 .main{margin-left:var(--rail-w);min-width:0;display:flex;flex-direction:column;min-height:100vh}
 .content{flex:1;width:100%;max-width:1020px;margin:0 auto;padding:30px 44px 96px}
 .content.wide{max-width:1160px}
+/* dashboard/curriculum use the full width instead of a narrow centre column */
+.content.home{max-width:1520px;padding-left:56px;padding-right:56px}
 
 /* ---------- topbar ---------- */
 .topbar{
@@ -252,7 +254,7 @@ table.spec.wraprow td:first-child{white-space:normal}
 .cert-banner .cb-body span{font-size:.85rem;color:var(--ink-2)}
 .cert-banner .cb-note{font-weight:600;color:var(--gold-text);font-size:.82rem}
 
-.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:14px}
 .phase-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
 .phase-card.done{border-color:#bfe3cd}
 .pcard-head{display:flex;align-items:center;justify-content:space-between}
@@ -273,10 +275,9 @@ table.spec.wraprow td:first-child{white-space:normal}
 .pm-row.is-done .pm-title{color:var(--muted)}
 .pm-min{font-size:.7rem;color:var(--muted);flex:0 0 auto}
 
-.recap{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 22px}
+.recap{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:10px 26px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 22px}
 .recap-row{display:flex;gap:10px;align-items:baseline;font-size:.88rem;color:var(--ink-2);line-height:1.5}
 .recap-row .rc-n{font-family:var(--mono);font-size:.64rem;font-weight:800;color:var(--gold-text);flex:0 0 auto;background:var(--gold-soft);border-radius:6px;padding:2px 6px}
-@media(max-width:720px){.recap{grid-template-columns:1fr}}
 
 /* modules page phase groups */
 .mods-phase{margin:22px 0}
@@ -558,8 +559,8 @@ textarea.ad-in{resize:vertical}
   .rail-logo,.rail-spacer,.rail-progress{display:none}
   .rail-item{width:auto;min-width:56px;padding:6px 6px}
   .main{margin-left:0;padding-bottom:70px}
-  .nav-panel{left:0;width:min(360px,88vw)}
   .content{padding:22px 20px 90px}
+  .content.home{padding-left:20px;padding-right:20px}
   .search-box{flex:1}
 }
 @media(max-width:640px){
@@ -567,6 +568,8 @@ textarea.ad-in{resize:vertical}
   h2.page-title{font-size:1.45rem}
   .home-hero h2{font-size:1.5rem}
   .content{padding:16px 14px 90px}
+  .content.home{padding-left:14px;padding-right:14px}
+  .ps-stats{display:none}
   .steps>li{padding-left:54px}
   .steps>li::before{left:12px;width:26px;height:26px}
   .topbar{padding:10px 14px}
@@ -4171,7 +4174,7 @@ ${src('"Daily Running Operation Purpose", pp.56–57')}
   ];
 
   /* ---------- Final exam (drawn across all modules) ---------- */
-  A.examMeta = { pass: 80, title: 'Installer Certification Exam' };
+  A.examMeta = { pass: 80, minutes: 30, title: 'Installer Certification Exam' };
   A.exam = [
     { stem: 'A reversible lane on a site walk adds how much to your camera and IO board counts?', options: ['+1 camera, +1 board', '+2 cameras, +2 boards', 'Nothing — reuse the entry lane hardware', '+2 cameras, +1 shared board'], answer: 1, explain: 'Reversible lanes count as two lanes; the diagrams show two cameras and two IO controllers.', source: 'M01/M06/M07' },
     { stem: 'Which device pair is mandatory — together — for scan-based access at a nested restricted entry?', options: ['Zentron 21 + PAX IM30', 'Zebra MS4717 + Elo Backpack 4 on a RevCon gooseneck', 'iPro camera + NUC', 'Adyen S1U2 + gooseneck'], answer: 1, explain: 'Both devices are required to enable scanning; they are housed together on a RevCon gooseneck pedestal at each nested entry point.', source: 'M05' },
@@ -5162,6 +5165,22 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
   A.appHooks = { getState: () => state, save, rerender: () => route() };
 
+  /* ---------- time model ----------
+     Realistic completion targets: all 14 modules (lessons + quizzes)
+     total ~1 hour; the certification exam is ~30 min. Lesson minutes
+     are distributed to sum to each module's total, so every surface
+     (home, module page, lesson page) stays consistent. */
+  (function normalizeTimes() {
+    const MIN = { m01: 4, m02: 4, m03: 4, m04: 5, m05: 4, m06: 4, m07: 5, m08: 5, m09: 4, m10: 5, m11: 4, m12: 4, m13: 4, m14: 4 };
+    (A.modules || []).forEach(m => {
+      const total = MIN[m.id] || 4;
+      m.minutes = total;
+      const n = m.lessons.length || 1;
+      const base = Math.floor(total / n), rem = total - base * n;
+      m.lessons.forEach((l, i) => { l.minutes = base + (i >= n - rem ? 1 : 0); });
+    });
+  })();
+
   /* ---------- helpers ---------- */
   const mod = id => A.modules.find(m => m.id === id);
   const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -5276,7 +5295,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     // progress summary strip
     h += `<div class="prog-summary">
       <div class="ps-main">
-        <div class="ps-top"><b>${pct}% complete</b><span>${done} of ${A.modules.length} modules · ${fmtDur(totalMinutes())} total${rem ? ` · ~${fmtDur(rem)} left` : ''}</span></div>
+        <div class="ps-top"><b>${pct}% complete</b><span>${done} of ${A.modules.length} modules · ~${fmtDur(totalMinutes())} training + ${A.examMeta.minutes}-min certification${rem ? ` · ~${fmtDur(rem)} left` : ''}</span></div>
         ${pbar(pct)}
       </div>
       <div class="ps-stats">
@@ -5294,7 +5313,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
         <div class="cb-ico">${UI('check', 22)}</div>
         <div class="cb-body">
           <b>You're eligible for certification${!A.modules.every(moduleComplete) ? ' <span class="cb-note">(admin override active)</span>' : ''}</b>
-          <span>${state.exam && state.exam.passed ? 'Passed — best score ' + Math.round(state.exam.best) + '%. You can retake to raise it.' : 'All modules complete. Take the certification exam when you\'re ready.'}</span>
+          <span>${state.exam && state.exam.passed ? 'Passed — best score ' + Math.round(state.exam.best) + '%. You can retake to raise it.' : 'All modules complete. The certification exam takes about ' + A.examMeta.minutes + ' minutes — take it when you\'re ready.'}</span>
         </div>
         <a class="btn accent" href="#/certification">${state.exam && state.exam.passed ? 'Retake' : 'Start certification'}</a>
       </div>`;
@@ -5324,7 +5343,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
           <span class="pc-check">${complete ? UI('check', 16) : `${pc.done}/${pc.total}`}</span>
         </div>
         <div class="pc-title">${esc(title)}</div>
-        <div class="pc-meta">${fmtDur(phaseMinutes(ph.n))} · ${pc.total} modules</div>
+        <div class="pc-meta">${fmtDur(phaseMinutes(ph.n))} · ${pc.total} module${pc.total === 1 ? '' : 's'}</div>
         <div class="pc-mods">`;
       mods.forEach(m => {
         const st = moduleState(m);
@@ -5353,13 +5372,13 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     });
     h += `</div>`;
 
-    return { crumb: '<b>Home</b>', html: h };
+    return { crumb: '<b>Home</b>', html: h, home: true };
   }
 
   /* ---------- MODULES (curriculum page) ---------- */
   function viewModules() {
     let h = `<span class="kicker">Curriculum</span><h2 class="page-title">Modules</h2>
-      <p class="lede">6 phases, ${A.modules.length} modules, in real deployment order — ${fmtDur(totalMinutes())} of training. Work them top to bottom, or jump to any module.</p>`;
+      <p class="lede">6 phases, ${A.modules.length} modules, in real deployment order — about ${fmtDur(totalMinutes())} of training plus a ${A.examMeta.minutes}-minute certification. Work them top to bottom, or jump to any module.</p>`;
     A.phaseMeta.forEach(ph => {
       const mods = A.modules.filter(m => m.phase === ph.n);
       if (!mods.length) return;
@@ -5380,7 +5399,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       });
       h += `</div></div>`;
     });
-    return { crumb: '<b>Modules</b>', html: h };
+    return { crumb: '<b>Modules</b>', html: h, home: true };
   }
 
   /* ---------- module / lesson ---------- */
@@ -5444,7 +5463,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
   }
   function viewCertification() {
     let h = `<span class="kicker">Final validation</span><h2 class="page-title">${esc(A.examMeta.title)}</h2>
-    <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. Pass mark: ${A.examMeta.pass}%.</p>`;
+    <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. About ${A.examMeta.minutes} minutes · pass mark ${A.examMeta.pass}%.</p>`;
 
     if (!examStarted) {
       if (!certEligible()) {
@@ -5703,7 +5722,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     else v = viewHome();
 
     const content = $('#content');
-    content.className = 'content' + (v.wide ? ' wide' : '');
+    content.className = 'content' + (v.wide ? ' wide' : '') + (v.home ? ' home' : '');
     content.style.padding = v.noPad ? '0' : '';
     content.style.maxWidth = v.bare ? 'none' : '';
     content.innerHTML = v.html;

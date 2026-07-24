@@ -28,6 +28,22 @@
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
   A.appHooks = { getState: () => state, save, rerender: () => route() };
 
+  /* ---------- time model ----------
+     Realistic completion targets: all 14 modules (lessons + quizzes)
+     total ~1 hour; the certification exam is ~30 min. Lesson minutes
+     are distributed to sum to each module's total, so every surface
+     (home, module page, lesson page) stays consistent. */
+  (function normalizeTimes() {
+    const MIN = { m01: 4, m02: 4, m03: 4, m04: 5, m05: 4, m06: 4, m07: 5, m08: 5, m09: 4, m10: 5, m11: 4, m12: 4, m13: 4, m14: 4 };
+    (A.modules || []).forEach(m => {
+      const total = MIN[m.id] || 4;
+      m.minutes = total;
+      const n = m.lessons.length || 1;
+      const base = Math.floor(total / n), rem = total - base * n;
+      m.lessons.forEach((l, i) => { l.minutes = base + (i >= n - rem ? 1 : 0); });
+    });
+  })();
+
   /* ---------- helpers ---------- */
   const mod = id => A.modules.find(m => m.id === id);
   const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -142,7 +158,7 @@
     // progress summary strip
     h += `<div class="prog-summary">
       <div class="ps-main">
-        <div class="ps-top"><b>${pct}% complete</b><span>${done} of ${A.modules.length} modules · ${fmtDur(totalMinutes())} total${rem ? ` · ~${fmtDur(rem)} left` : ''}</span></div>
+        <div class="ps-top"><b>${pct}% complete</b><span>${done} of ${A.modules.length} modules · ~${fmtDur(totalMinutes())} training + ${A.examMeta.minutes}-min certification${rem ? ` · ~${fmtDur(rem)} left` : ''}</span></div>
         ${pbar(pct)}
       </div>
       <div class="ps-stats">
@@ -160,7 +176,7 @@
         <div class="cb-ico">${UI('check', 22)}</div>
         <div class="cb-body">
           <b>You're eligible for certification${!A.modules.every(moduleComplete) ? ' <span class="cb-note">(admin override active)</span>' : ''}</b>
-          <span>${state.exam && state.exam.passed ? 'Passed — best score ' + Math.round(state.exam.best) + '%. You can retake to raise it.' : 'All modules complete. Take the certification exam when you\'re ready.'}</span>
+          <span>${state.exam && state.exam.passed ? 'Passed — best score ' + Math.round(state.exam.best) + '%. You can retake to raise it.' : 'All modules complete. The certification exam takes about ' + A.examMeta.minutes + ' minutes — take it when you\'re ready.'}</span>
         </div>
         <a class="btn accent" href="#/certification">${state.exam && state.exam.passed ? 'Retake' : 'Start certification'}</a>
       </div>`;
@@ -190,7 +206,7 @@
           <span class="pc-check">${complete ? UI('check', 16) : `${pc.done}/${pc.total}`}</span>
         </div>
         <div class="pc-title">${esc(title)}</div>
-        <div class="pc-meta">${fmtDur(phaseMinutes(ph.n))} · ${pc.total} modules</div>
+        <div class="pc-meta">${fmtDur(phaseMinutes(ph.n))} · ${pc.total} module${pc.total === 1 ? '' : 's'}</div>
         <div class="pc-mods">`;
       mods.forEach(m => {
         const st = moduleState(m);
@@ -219,13 +235,13 @@
     });
     h += `</div>`;
 
-    return { crumb: '<b>Home</b>', html: h };
+    return { crumb: '<b>Home</b>', html: h, home: true };
   }
 
   /* ---------- MODULES (curriculum page) ---------- */
   function viewModules() {
     let h = `<span class="kicker">Curriculum</span><h2 class="page-title">Modules</h2>
-      <p class="lede">6 phases, ${A.modules.length} modules, in real deployment order — ${fmtDur(totalMinutes())} of training. Work them top to bottom, or jump to any module.</p>`;
+      <p class="lede">6 phases, ${A.modules.length} modules, in real deployment order — about ${fmtDur(totalMinutes())} of training plus a ${A.examMeta.minutes}-minute certification. Work them top to bottom, or jump to any module.</p>`;
     A.phaseMeta.forEach(ph => {
       const mods = A.modules.filter(m => m.phase === ph.n);
       if (!mods.length) return;
@@ -246,7 +262,7 @@
       });
       h += `</div></div>`;
     });
-    return { crumb: '<b>Modules</b>', html: h };
+    return { crumb: '<b>Modules</b>', html: h, home: true };
   }
 
   /* ---------- module / lesson ---------- */
@@ -310,7 +326,7 @@
   }
   function viewCertification() {
     let h = `<span class="kicker">Final validation</span><h2 class="page-title">${esc(A.examMeta.title)}</h2>
-    <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. Pass mark: ${A.examMeta.pass}%.</p>`;
+    <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. About ${A.examMeta.minutes} minutes · pass mark ${A.examMeta.pass}%.</p>`;
 
     if (!examStarted) {
       if (!certEligible()) {
@@ -569,7 +585,7 @@
     else v = viewHome();
 
     const content = $('#content');
-    content.className = 'content' + (v.wide ? ' wide' : '');
+    content.className = 'content' + (v.wide ? ' wide' : '') + (v.home ? ' home' : '');
     content.style.padding = v.noPad ? '0' : '';
     content.style.maxWidth = v.bare ? 'none' : '';
     content.innerHTML = v.html;

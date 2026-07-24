@@ -259,7 +259,7 @@
   ];
 
   /* ---------- Final exam (drawn across all modules) ---------- */
-  A.examMeta = { pass: 80, title: 'Installer Certification Exam' };
+  A.examMeta = { pass: 80, minutes: 30, title: 'Installer Certification Exam' };
   A.exam = [
     { stem: 'A reversible lane on a site walk adds how much to your camera and IO board counts?', options: ['+1 camera, +1 board', '+2 cameras, +2 boards', 'Nothing — reuse the entry lane hardware', '+2 cameras, +1 shared board'], answer: 1, explain: 'Reversible lanes count as two lanes; the diagrams show two cameras and two IO controllers.', source: 'M01/M06/M07' },
     { stem: 'Which device pair is mandatory — together — for scan-based access at a nested restricted entry?', options: ['Zentron 21 + PAX IM30', 'Zebra MS4717 + Elo Backpack 4 on a RevCon gooseneck', 'iPro camera + NUC', 'Adyen S1U2 + gooseneck'], answer: 1, explain: 'Both devices are required to enable scanning; they are housed together on a RevCon gooseneck pedestal at each nested entry point.', source: 'M05' },
