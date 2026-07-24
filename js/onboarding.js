@@ -1,11 +1,15 @@
 /* ============================================================
-   Onboarding v2: inline intro slides (Start-here section),
-   glossary icons, spotlight tour for the rail layout.
+   Onboarding v3
+   - Glossary data
+   - Quick Intro: a popup modal about the SUBJECT (What is GMP,
+     product offerings, ExpressLane, jargon). Triggered by button.
+   - Virtual tour: spotlight over the PLATFORM. Repositions on
+     scroll so it can never drift off-screen.
    ============================================================ */
 (function () {
   'use strict';
   const A = window.ACADEMY;
-  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const dia = n => (window.DIAGRAMS[n] ? window.DIAGRAMS[n]() : '');
   const ico = n => `<svg viewBox="0 0 24 24" width="30" height="30">${window.ACADEMY_ICONS.raw[n] || ''}</svg>`;
   A.glossIcon = ico;
@@ -28,100 +32,118 @@
     { icon: 'doc', term: 'Datacap', def: 'The payment integration behind the PAX IM30 (DC Direct). US ExpressLane orders must specify "Datacap Android Forms" support to the reseller.', mod: 'm04' }
   ];
 
-  /* ---------- intro slides (rendered inline in the Start-here section) ---------- */
-  const slides = [
+  /* ============================================================
+     QUICK INTRO — subject primer (modal popup)
+     ============================================================ */
+  const subjectSlides = [
     {
-      title: 'You\'re going to make parking garages ticketless',
+      title: 'What is GMP Access?',
       body: `
-<p style="max-width:64ch;margin:0 auto;color:var(--muted)">You don't need to know anything about GMP, parking systems, or networking to start. The product you'll install is called <strong>GMP Access</strong> (also called the <strong>IoT GateKit</strong>). It bolts onto a garage's existing gates so that a camera reading the car's plate — instead of a paper ticket — decides when the gate opens.</p>
-<div class="figure" style="margin-top:14px">${dia('systemOverview')}</div>`
+<p><strong>GMP Access</strong> (also called the <strong>IoT GateKit</strong>) is a digital access-control system for gated parking garages. Instead of a paper ticket, a camera reads the car's <strong>license plate</strong> — and that plate becomes the ticket. It bolts onto a garage's <em>existing</em> gates rather than replacing them.</p>
+<div class="figure">${dia('systemOverview')}</div>`
     },
     {
-      title: 'Eight words that unlock everything',
+      title: 'The product family & ExpressLane',
       body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Parking has jargon. These eight cover 90% of what you'll hear — the full glossary lives further down this page.</p>
+<p>Every site gets the <strong>base kit</strong>: recognition opens the gate. Sites that also want drivers to <strong>pay right in the lane</strong> add the <strong>ExpressLane</strong> layer — unattended payment terminals, kiosks, and always-on internet. You'll see "ExpressLane only" flags throughout the training; this is what they mean.</p>
+<div class="figure">${dia('expressLaneCompare')}</div>`
+    },
+    {
+      title: 'How a car gets through a lane',
+      body: `
+<p>Every device you'll install serves one link of this chain. Learn it once and you can localise almost any fault before opening a cabinet.</p>
+<div class="figure">${dia('flowChain')}</div>`
+    },
+    {
+      title: 'The jargon you\'ll hear',
+      body: `
+<p>Parking has its own vocabulary. These eight terms cover most of it — the full glossary has the rest.</p>
 <div class="wl-terms">
 ${A.glossary.slice(0, 8).map(g => `<div class="wl-term"><div class="wl-ico">${ico(g.icon)}</div><b>${esc(g.term)}</b><span>${esc(g.def.split('.')[0])}.</span></div>`).join('')}
-</div>`
-    },
-    {
-      title: 'How one car gets through a lane',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Every device you'll ever mount, wire, or debug serves one link of this chain. Learn it once and you can localize any fault before opening a cabinet.</p>
-<div class="figure" style="margin-top:14px">${dia('flowChain')}</div>`
-    },
-    {
-      title: 'One kit, two flavors',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Every site gets the base kit. Sites where drivers <em>pay in the lane</em> add the <strong>ExpressLane</strong> layer — more hardware, more wiring, and always-on internet. You'll see "ExpressLane only" flags across the curriculum; now you know what they mean.</p>
-<div class="figure" style="margin-top:14px">${dia('expressLaneCompare')}</div>`
-    },
-    {
-      title: 'Your path: 6 phases, 14 modules',
-      body: `
-<div class="figure">${dia('journey')}</div>
-<p style="max-width:62ch;margin:12px auto 0;color:var(--muted)">Work the phases in order — each mirrors a real deployment. Every module ends with a <strong>10-question knowledge check</strong> (70% to pass); the program ends with a <strong>30-question readiness exam</strong>. Progress saves on this device.</p>`
-    },
-    {
-      title: 'Learn here, use it on-site',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Everything you learn is also compressed into the <strong>Field kit</strong> further down this page — tappable checklists, wiring pinouts, every credential and distance. Cards open in a high-contrast dark view built for sunlight and gloves. The whole curriculum also prints as a field guide.</p>
-<div class="wl-field-preview">
-${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key', 'Credentials & Defaults'], ['ruler', 'Distances & Geometry'], ['flask', 'Lane Test Procedure'], ['globe', 'Whitelist & Ports']].map(c => `<div class="wl-fc"><span>${UI(c[0], 16)}</span>${c[1]}</div>`).join('')}
-</div>`
+</div>
+<p style="text-align:center;margin-top:14px"><a href="#/glossary" data-qi="close-link">See the full glossary →</a></p>`
     }
   ];
+  let qiIdx = 0;
+  let qiEl = null;
 
-  let slideIdx = 0;
-  A.introSlideHtml = function () {
-    const s = slides[slideIdx];
-    const last = slideIdx === slides.length - 1;
-    return `<div class="intro-slide">
-      <span class="kicker">Intro · ${slideIdx + 1} of ${slides.length}</span>
-      <div class="intro-title">${esc(s.title)}</div>
-      ${s.body}
-      <div class="wl-nav">
-        <button class="btn secondary small" data-wl="back" ${slideIdx === 0 ? 'disabled' : ''}>← Back</button>
-        <div class="wl-dots">${slides.map((_, i) => `<span class="wl-dot${i === slideIdx ? ' on' : ''}" data-wl-dot="${i}"></span>`).join('')}</div>
-        ${last
-          ? `<span><button class="btn accent small" data-wl="tour">Take the 30-sec tour →</button> <button class="btn small" data-wl="start" style="margin-left:6px">Start M01 →</button></span>`
-          : `<button class="btn small" data-wl="next">Next →</button>`}
+  function renderQi() {
+    if (!qiEl) return;
+    const s = subjectSlides[qiIdx], last = qiIdx === subjectSlides.length - 1;
+    qiEl.querySelector('.qi-modal').innerHTML = `
+      <div class="qi-head">
+        <span class="kicker">Quick intro · ${qiIdx + 1} of ${subjectSlides.length}</span>
+        <button class="qi-x" data-qi="close" aria-label="Close">${UI('close', 16)}</button>
       </div>
-    </div>`;
+      <h3 class="qi-title">${esc(s.title)}</h3>
+      <div class="qi-body">${s.body}</div>
+      <div class="qi-nav">
+        <button class="btn secondary small" data-qi="back" ${qiIdx === 0 ? 'disabled' : ''}>← Back</button>
+        <div class="wl-dots">${subjectSlides.map((_, i) => `<span class="wl-dot${i === qiIdx ? ' on' : ''}" data-qi-dot="${i}"></span>`).join('')}</div>
+        ${last ? `<button class="btn accent small" data-qi="close">Done</button>` : `<button class="btn small" data-qi="next">Next →</button>`}
+      </div>`;
+  }
+  A.openQuickIntro = function () {
+    qiIdx = 0;
+    if (!qiEl) {
+      qiEl = document.createElement('div');
+      qiEl.className = 'qi-overlay';
+      qiEl.innerHTML = `<div class="qi-modal" role="dialog" aria-modal="true"></div>`;
+      document.body.appendChild(qiEl);
+    }
+    document.body.style.overflow = 'hidden';
+    renderQi();
   };
-  function repaintSlide() {
-    const slot = document.getElementById('introSlot');
-    if (slot) slot.innerHTML = A.introSlideHtml();
+  function closeQi() {
+    if (qiEl) { qiEl.remove(); qiEl = null; }
+    document.body.style.overflow = '';
   }
 
-  /* ---------- spotlight tour (rail layout) ---------- */
+  /* ============================================================
+     VIRTUAL TOUR — platform spotlight (repositions on scroll)
+     ============================================================ */
   const tourSteps = [
-    { sel: '.rail', title: 'Everything lives here', text: 'Five labeled destinations, always visible: Home, Modules, Field kit, Exam, and the printable Guide. The ring at the bottom tracks your overall progress.', pos: 'right' },
-    { sel: '#railModules', title: 'The module tree', text: 'Click Modules any time to slide out the full curriculum — 6 phases, 14 modules, with your progress dots. It closes as soon as you pick one.', pos: 'right' },
-    { sel: 'details.sect[data-sec="curriculum"]', title: 'Or browse right here', text: 'The home page holds everything in collapsible sections: this curriculum, the field kit, the glossary, and reference tools. Sections remember whether you left them open.', pos: 'top' },
-    { sel: '.search-box', title: 'Search everything', text: 'Any terminal (NC4), IP (10.0.0.1), distance, or password — search jumps straight to the lesson, field card, or glossary entry that has it.', pos: 'bottom' },
-    { sel: '.topbar .btn.accent', title: 'Field kit, one tap', text: 'The on-site layer: checklists, pinouts, and credentials in a dark, glove-friendly view for when you\'re standing at a gate cabinet.', pos: 'bottom' }
+    { sel: '.rail', title: 'Everything lives here', text: 'Six labelled destinations, always visible: Home, Modules, Field kit, Certification, Textbook and Admin. The ring at the bottom tracks your overall progress.', pos: 'right' },
+    { sel: '#heroActions', title: 'New to the subject?', text: 'Quick intro is a 2-minute primer on GMP Access itself — what it is, ExpressLane, and the jargon. This tour (which you can replay anytime) is about the platform.', pos: 'bottom' },
+    { sel: '#phaseGrid', title: 'Your curriculum & live progress', text: 'Six phases, fourteen modules. Each module checks off automatically when you finish its lessons and pass its knowledge check — and a phase checks off once all its modules are done.', pos: 'top' },
+    { sel: '#certBanner', title: 'Certification eligibility', text: 'The certification exam unlocks once every module is complete. This banner always shows where you stand and what\'s left.', pos: 'top' },
+    { sel: '.search-box', title: 'Search everything', text: 'Any terminal (NC4), IP (10.0.0.1), distance or password — search jumps straight to the lesson, field card, or glossary entry that has it.', pos: 'bottom' }
   ];
-  let tourIdx = -1, tourEls = null;
+  let tourIdx = -1, tourEls = null, tourElRef = null;
 
   function tourUI() {
     if (tourEls) return tourEls;
-    const scrim = document.createElement('div');
-    scrim.className = 'tour-scrim';
-    const hole = document.createElement('div');
-    hole.className = 'tour-hole';
-    const tip = document.createElement('div');
-    tip.className = 'tour-tip';
+    const scrim = document.createElement('div'); scrim.className = 'tour-scrim';
+    const hole = document.createElement('div'); hole.className = 'tour-hole';
+    const tip = document.createElement('div'); tip.className = 'tour-tip';
     document.body.appendChild(scrim); document.body.appendChild(hole); document.body.appendChild(tip);
     tourEls = { scrim, hole, tip };
     return tourEls;
   }
   function endTour() {
+    window.removeEventListener('scroll', reposition, true);
     if (tourEls) { tourEls.scrim.remove(); tourEls.hole.remove(); tourEls.tip.remove(); tourEls = null; }
-    tourIdx = -1;
+    tourIdx = -1; tourElRef = null;
     const st = A.appHooks.getState();
     if (!st.onboarded) { st.onboarded = true; A.appHooks.save(); }
   }
+  function place() {
+    if (!tourElRef || !tourEls) return;
+    const r = tourElRef.getBoundingClientRect();
+    const step = tourSteps[tourIdx];
+    const { hole, tip } = tourEls;
+    hole.style.cssText = `top:${r.top - 6}px;left:${r.left - 6}px;width:${r.width + 12}px;height:${r.height + 12}px;`;
+    const tw = 320, th = tip.offsetHeight || 170, pad = 14;
+    let top, left;
+    if (step.pos === 'right') { top = Math.max(70, r.top); left = r.right + pad; }
+    else if (step.pos === 'bottom') { top = r.bottom + pad; left = r.left + r.width / 2 - tw / 2; }
+    else { top = r.top - th - pad; left = r.left + r.width / 2 - tw / 2; }
+    left = Math.min(window.innerWidth - tw - 12, Math.max(12, left));
+    if (top + th > window.innerHeight - 12) top = Math.max(12, window.innerHeight - th - 12);
+    if (top < 12) top = 12;
+    tip.style.cssText = `top:${top}px;left:${left}px;width:${tw}px`;
+  }
+  function reposition() { place(); }
   function showStep() {
     while (tourIdx < tourSteps.length) {
       const el = document.querySelector(tourSteps[tourIdx] && tourSteps[tourIdx].sel);
@@ -130,22 +152,16 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
     }
     if (tourIdx >= tourSteps.length) { finishTour(); return; }
     const step = tourSteps[tourIdx];
-    const el = document.querySelector(step.sel);
-    el.scrollIntoView({ block: 'nearest' });
-    const r = el.getBoundingClientRect();
-    const { hole, tip } = tourUI();
-    hole.style.cssText = `top:${r.top - 6}px;left:${r.left - 6}px;width:${r.width + 12}px;height:${r.height + 12}px;`;
+    tourElRef = document.querySelector(step.sel);
+    const { tip } = tourUI();
     tip.innerHTML = `<span class="kicker">Tour · ${tourIdx + 1} of ${tourSteps.length}</span>
       <h4>${esc(step.title)}</h4><p>${esc(step.text)}</p>
-      <div class="tour-btns"><a href="#" data-tour="end">End tour</a><button class="btn small accent" data-tour="next">${tourIdx === tourSteps.length - 1 ? 'Finish' : 'Next →'}</button></div>`;
-    const tw = 320, pad = 14;
-    let top, left;
-    if (step.pos === 'right') { top = Math.max(70, r.top + 10); left = r.right + pad; }
-    else if (step.pos === 'bottom') { top = r.bottom + pad; left = Math.min(window.innerWidth - tw - 16, Math.max(16, r.left + r.width / 2 - tw / 2)); }
-    else { top = Math.max(70, r.top - pad - 160); left = Math.min(window.innerWidth - tw - 16, Math.max(16, r.left + r.width / 2 - tw / 2)); }
-    if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 16;
-    if (top < 8) top = r.bottom + pad;
-    tip.style.cssText = `top:${top}px;left:${left}px;width:${tw}px`;
+      <div class="tour-btns"><a href="#" data-tour="end">End tour</a>
+        <span>${tourIdx > 0 ? '<button class="btn secondary small" data-tour="back">Back</button> ' : ''}<button class="btn small accent" data-tour="next">${tourIdx === tourSteps.length - 1 ? 'Finish' : 'Next →'}</button></span></div>`;
+    // scroll target into view, then position (twice, to settle after layout/scroll)
+    tourElRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    place();
+    setTimeout(place, 260);
   }
   function finishTour() {
     endTour();
@@ -162,39 +178,43 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
     }), 50);
   }
   A.startTour = function () {
-    const go = () => setTimeout(() => { tourIdx = 0; tourUI(); showStep(); }, 140);
+    const go = () => setTimeout(() => {
+      tourIdx = 0; tourUI();
+      window.addEventListener('scroll', reposition, true);
+      showStep();
+    }, 160);
     if (location.hash === '#/' || location.hash === '' || location.hash === '#') go();
     else { location.hash = '#/'; go(); }
   };
 
   /* ---------- event wiring ---------- */
   document.addEventListener('click', e => {
-    const wl = e.target.closest('[data-wl]');
-    if (wl) {
-      e.preventDefault();
-      const act = wl.dataset.wl;
-      const st = A.appHooks.getState();
-      if (act === 'next') { slideIdx = Math.min(slides.length - 1, slideIdx + 1); repaintSlide(); }
-      else if (act === 'back') { slideIdx = Math.max(0, slideIdx - 1); repaintSlide(); }
-      else if (act === 'tour') {
-        st.onboarded = true; st.sections = st.sections || {}; st.sections.start = false;
-        A.appHooks.save(); slideIdx = 0; A.startTour();
-      }
-      else if (act === 'start') {
-        st.onboarded = true; st.sections = st.sections || {}; st.sections.start = false;
-        A.appHooks.save(); slideIdx = 0; location.hash = '#/module/m01';
-      }
+    // quick intro modal
+    const qi = e.target.closest('[data-qi]');
+    if (qi) {
+      const act = qi.dataset.qi;
+      if (act === 'next') { qiIdx = Math.min(subjectSlides.length - 1, qiIdx + 1); renderQi(); }
+      else if (act === 'back') { qiIdx = Math.max(0, qiIdx - 1); renderQi(); }
+      else if (act === 'close') { e.preventDefault(); closeQi(); }
+      else if (act === 'close-link') { closeQi(); } // let the link navigate
       return;
     }
-    const dot = e.target.closest('[data-wl-dot]');
-    if (dot) { slideIdx = +dot.dataset.wlDot; repaintSlide(); return; }
+    const qd = e.target.closest('[data-qi-dot]');
+    if (qd) { qiIdx = +qd.dataset.qiDot; renderQi(); return; }
+    if (qiEl && e.target.classList && e.target.classList.contains('qi-overlay')) { closeQi(); return; }
+    // tour
     const tr = e.target.closest('[data-tour]');
     if (tr) {
-      if (tr.dataset.tour === 'next') { tourIdx++; showStep(); }
-      else if (tr.dataset.tour === 'end') { e.preventDefault(); endTour(); }
+      const act = tr.dataset.tour;
+      if (act === 'next') { tourIdx++; showStep(); }
+      else if (act === 'back') { tourIdx = Math.max(0, tourIdx - 1); showStep(); }
+      else if (act === 'end') { e.preventDefault(); endTour(); }
       return;
     }
   });
-  window.addEventListener('resize', () => { if (tourIdx >= 0 && tourEls) showStep(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { if (qiEl) closeQi(); else if (tourEls) endTour(); }
+  });
+  window.addEventListener('resize', () => { if (tourIdx >= 0 && tourEls) place(); });
   window.addEventListener('hashchange', () => { if (tourIdx >= 0) endTour(); });
 })();

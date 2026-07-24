@@ -16,11 +16,8 @@ const html = `<title>GMP Access — Installer Academy</title>
 <style>${css}</style>
 <div class="app">
   <nav class="rail no-print" id="rail" aria-label="Main navigation"></nav>
-  <div class="panel-scrim"></div>
-  <aside class="nav-panel no-print" id="navPanel" aria-label="Curriculum"></aside>
   <div class="main">
     <header class="topbar no-print">
-      <button class="hamburger" id="hamburger" aria-label="Curriculum menu"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       <div class="crumb" id="crumb"></div>
       <div class="search-box">
         <input id="searchInput" type="search" placeholder="Search… (e.g. NC4, 10.0.0.1, lux)" autocomplete="off">

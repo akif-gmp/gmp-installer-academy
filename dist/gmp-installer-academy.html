@@ -221,11 +221,92 @@ table.spec.wraprow td:first-child{white-space:normal}
 .figure svg{display:block;margin:0 auto}
 .src{font-size:.72rem;color:var(--muted);font-style:italic}
 
-/* ---------- merged home: collapsible sections ---------- */
+/* ---------- home dashboard ---------- */
 .home-hero{padding:26px 4px 6px}
 .home-hero h2{font-size:2rem;letter-spacing:-.02em;margin:.15em 0 .2em;font-weight:800}
 .home-hero p{color:var(--muted);max-width:66ch;margin:.2em 0 1em}
-.home-hero .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.home-hero .hero-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.home-h3{font-family:var(--font-head);font-size:1.15rem;font-weight:800;margin:2em 0 .7em;letter-spacing:-.01em}
+
+.pbar{height:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.pbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#3ecf8e);border-radius:6px;transition:width .4s}
+
+.prog-summary{display:flex;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 22px;margin:18px 0}
+.ps-main{flex:1;min-width:0}
+.ps-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.ps-top b{font-size:1.05rem}
+.ps-top span{font-size:.82rem;color:var(--muted)}
+.ps-stats{display:flex;gap:8px;flex:0 0 auto}
+.ps-stat{text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;min-width:70px}
+.ps-stat .n{font-size:1.15rem;font-weight:800;letter-spacing:-.01em}
+.ps-stat .l{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+.cert-banner{display:flex;align-items:center;gap:16px;border-radius:14px;padding:16px 20px;margin:16px 0;border:1px solid}
+.cert-banner.ok{background:var(--green-soft);border-color:#bfe3cd}
+.cert-banner.locked{background:var(--gold-soft);border-color:#f3e3ab}
+.cert-banner .cb-ico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;background:var(--surface)}
+.cert-banner.ok .cb-ico{color:var(--green-deep)}
+.cert-banner.locked .cb-ico{color:var(--gold-text)}
+.cert-banner .cb-body{flex:1;min-width:0}
+.cert-banner .cb-body b{display:block;font-size:1rem}
+.cert-banner .cb-body span{font-size:.85rem;color:var(--ink-2)}
+.cert-banner .cb-note{font-weight:600;color:var(--gold-text);font-size:.82rem}
+
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.phase-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+.phase-card.done{border-color:#bfe3cd}
+.pcard-head{display:flex;align-items:center;justify-content:space-between}
+.pc-num{font-family:var(--mono);font-size:.66rem;font-weight:800;letter-spacing:.1em;color:var(--gold-text)}
+.pc-check{font-size:.72rem;font-weight:800;color:var(--muted)}
+.phase-card.done .pc-check{color:var(--green-deep)}
+.pc-title{font-family:var(--font-head);font-weight:800;font-size:1rem;margin:4px 0 2px;line-height:1.25}
+.pc-meta{font-size:.72rem;color:var(--muted);margin-bottom:10px}
+.pc-mods{display:flex;flex-direction:column;gap:2px}
+.pm-row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;color:var(--ink);font-size:.85rem}
+.pm-row:hover{background:var(--surface-2);text-decoration:none}
+.pm-check{flex:0 0 22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800}
+.pm-check.done{background:var(--green);color:#fff}
+.pm-check.prog{background:var(--gold-soft);color:var(--gold-text);border:1px solid #f3e3ab}
+.pm-check.todo{border:2px solid var(--line-2)}
+.pm-code{font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--muted);flex:0 0 30px}
+.pm-title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pm-row.is-done .pm-title{color:var(--muted)}
+.pm-min{font-size:.7rem;color:var(--muted);flex:0 0 auto}
+
+.recap{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 22px}
+.recap-row{display:flex;gap:10px;align-items:baseline;font-size:.88rem;color:var(--ink-2);line-height:1.5}
+.recap-row .rc-n{font-family:var(--mono);font-size:.64rem;font-weight:800;color:var(--gold-text);flex:0 0 auto;background:var(--gold-soft);border-radius:6px;padding:2px 6px}
+@media(max-width:720px){.recap{grid-template-columns:1fr}}
+
+/* modules page phase groups */
+.mods-phase{margin:22px 0}
+.mods-phase-head{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.mods-phase-head .ph-num{color:var(--gold-text)}
+.mods-phase-head .ph-title{flex:1;font-family:var(--font-head);font-weight:800;font-size:1.02rem}
+.mods-phase-head .ph-meta{color:var(--muted);font-size:.76rem;font-weight:600}
+
+/* certification locked */
+.cert-locked{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:34px;text-align:center;max-width:560px;margin:18px 0}
+.cert-locked .cl-ico{color:var(--gold-text);display:flex;justify-content:center;margin-bottom:6px}
+.cert-locked h3{font-size:1.3rem;margin:.2em 0 .4em}
+.cert-locked p{color:var(--ink-2);max-width:46ch;margin:.4em auto}
+.cert-locked .pbar{max-width:320px;margin:14px auto 0}
+
+/* quick intro modal */
+.qi-overlay{position:fixed;inset:0;z-index:120;background:rgba(24,30,40,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:22px}
+.qi-modal{background:var(--surface);border:1px solid var(--line-2);border-radius:16px;box-shadow:var(--shadow-float);width:min(720px,100%);max-height:90vh;overflow-y:auto;padding:22px 26px 20px}
+.qi-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.qi-x{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:8px}
+.qi-x:hover{background:var(--surface-2);color:var(--ink)}
+.qi-title{font-family:var(--font-head);font-weight:800;font-size:1.35rem;margin:.1em 0 .5em;letter-spacing:-.01em}
+.qi-body{color:var(--ink-2)}
+.qi-body p{max-width:none;margin:.5em 0}
+.qi-body .figure{margin:.8em 0}
+.qi-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.wl-dots{display:flex;gap:8px}
+.wl-dot{width:8px;height:8px;border-radius:50%;background:var(--line-2);cursor:pointer}
+.wl-dot.on{background:var(--green);transform:scale(1.3)}
+.tour-btns span{display:flex;gap:8px;align-items:center}
 
 details.sect{
   background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
@@ -498,11 +579,8 @@ textarea.ad-in{resize:vertical}
 </style>
 <div class="app">
   <nav class="rail no-print" id="rail" aria-label="Main navigation"></nav>
-  <div class="panel-scrim"></div>
-  <aside class="nav-panel no-print" id="navPanel" aria-label="Curriculum"></aside>
   <div class="main">
     <header class="topbar no-print">
-      <button class="hamburger" id="hamburger" aria-label="Curriculum menu"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       <div class="crumb" id="crumb"></div>
       <div class="search-box">
         <input id="searchInput" type="search" placeholder="Search… (e.g. NC4, 10.0.0.1, lux)" autocomplete="off">
@@ -4093,7 +4171,7 @@ ${src('"Daily Running Operation Purpose", pp.56–57')}
   ];
 
   /* ---------- Final exam (drawn across all modules) ---------- */
-  A.examMeta = { pass: 80, title: 'Installer Readiness Exam' };
+  A.examMeta = { pass: 80, title: 'Installer Certification Exam' };
   A.exam = [
     { stem: 'A reversible lane on a site walk adds how much to your camera and IO board counts?', options: ['+1 camera, +1 board', '+2 cameras, +2 boards', 'Nothing — reuse the entry lane hardware', '+2 cameras, +1 shared board'], answer: 1, explain: 'Reversible lanes count as two lanes; the diagrams show two cameras and two IO controllers.', source: 'M01/M06/M07' },
     { stem: 'Which device pair is mandatory — together — for scan-based access at a nested restricted entry?', options: ['Zentron 21 + PAX IM30', 'Zebra MS4717 + Elo Backpack 4 on a RevCon gooseneck', 'iPro camera + NUC', 'Adyen S1U2 + gooseneck'], answer: 1, explain: 'Both devices are required to enable scanning; they are housed together on a RevCon gooseneck pedestal at each nested entry point.', source: 'M05' },
@@ -4371,13 +4449,17 @@ ${src('"Daily Running Operation Purpose", pp.56–57')}
 
 ;
 /* ============================================================
-   Onboarding v2: inline intro slides (Start-here section),
-   glossary icons, spotlight tour for the rail layout.
+   Onboarding v3
+   - Glossary data
+   - Quick Intro: a popup modal about the SUBJECT (What is GMP,
+     product offerings, ExpressLane, jargon). Triggered by button.
+   - Virtual tour: spotlight over the PLATFORM. Repositions on
+     scroll so it can never drift off-screen.
    ============================================================ */
 (function () {
   'use strict';
   const A = window.ACADEMY;
-  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const dia = n => (window.DIAGRAMS[n] ? window.DIAGRAMS[n]() : '');
   const ico = n => `<svg viewBox="0 0 24 24" width="30" height="30">${window.ACADEMY_ICONS.raw[n] || ''}</svg>`;
   A.glossIcon = ico;
@@ -4400,100 +4482,118 @@ ${src('"Daily Running Operation Purpose", pp.56–57')}
     { icon: 'doc', term: 'Datacap', def: 'The payment integration behind the PAX IM30 (DC Direct). US ExpressLane orders must specify "Datacap Android Forms" support to the reseller.', mod: 'm04' }
   ];
 
-  /* ---------- intro slides (rendered inline in the Start-here section) ---------- */
-  const slides = [
+  /* ============================================================
+     QUICK INTRO — subject primer (modal popup)
+     ============================================================ */
+  const subjectSlides = [
     {
-      title: 'You\'re going to make parking garages ticketless',
+      title: 'What is GMP Access?',
       body: `
-<p style="max-width:64ch;margin:0 auto;color:var(--muted)">You don't need to know anything about GMP, parking systems, or networking to start. The product you'll install is called <strong>GMP Access</strong> (also called the <strong>IoT GateKit</strong>). It bolts onto a garage's existing gates so that a camera reading the car's plate — instead of a paper ticket — decides when the gate opens.</p>
-<div class="figure" style="margin-top:14px">${dia('systemOverview')}</div>`
+<p><strong>GMP Access</strong> (also called the <strong>IoT GateKit</strong>) is a digital access-control system for gated parking garages. Instead of a paper ticket, a camera reads the car's <strong>license plate</strong> — and that plate becomes the ticket. It bolts onto a garage's <em>existing</em> gates rather than replacing them.</p>
+<div class="figure">${dia('systemOverview')}</div>`
     },
     {
-      title: 'Eight words that unlock everything',
+      title: 'The product family & ExpressLane',
       body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Parking has jargon. These eight cover 90% of what you'll hear — the full glossary lives further down this page.</p>
+<p>Every site gets the <strong>base kit</strong>: recognition opens the gate. Sites that also want drivers to <strong>pay right in the lane</strong> add the <strong>ExpressLane</strong> layer — unattended payment terminals, kiosks, and always-on internet. You'll see "ExpressLane only" flags throughout the training; this is what they mean.</p>
+<div class="figure">${dia('expressLaneCompare')}</div>`
+    },
+    {
+      title: 'How a car gets through a lane',
+      body: `
+<p>Every device you'll install serves one link of this chain. Learn it once and you can localise almost any fault before opening a cabinet.</p>
+<div class="figure">${dia('flowChain')}</div>`
+    },
+    {
+      title: 'The jargon you\'ll hear',
+      body: `
+<p>Parking has its own vocabulary. These eight terms cover most of it — the full glossary has the rest.</p>
 <div class="wl-terms">
 ${A.glossary.slice(0, 8).map(g => `<div class="wl-term"><div class="wl-ico">${ico(g.icon)}</div><b>${esc(g.term)}</b><span>${esc(g.def.split('.')[0])}.</span></div>`).join('')}
-</div>`
-    },
-    {
-      title: 'How one car gets through a lane',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Every device you'll ever mount, wire, or debug serves one link of this chain. Learn it once and you can localize any fault before opening a cabinet.</p>
-<div class="figure" style="margin-top:14px">${dia('flowChain')}</div>`
-    },
-    {
-      title: 'One kit, two flavors',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Every site gets the base kit. Sites where drivers <em>pay in the lane</em> add the <strong>ExpressLane</strong> layer — more hardware, more wiring, and always-on internet. You'll see "ExpressLane only" flags across the curriculum; now you know what they mean.</p>
-<div class="figure" style="margin-top:14px">${dia('expressLaneCompare')}</div>`
-    },
-    {
-      title: 'Your path: 6 phases, 14 modules',
-      body: `
-<div class="figure">${dia('journey')}</div>
-<p style="max-width:62ch;margin:12px auto 0;color:var(--muted)">Work the phases in order — each mirrors a real deployment. Every module ends with a <strong>10-question knowledge check</strong> (70% to pass); the program ends with a <strong>30-question readiness exam</strong>. Progress saves on this device.</p>`
-    },
-    {
-      title: 'Learn here, use it on-site',
-      body: `
-<p style="max-width:62ch;margin:0 auto;color:var(--muted)">Everything you learn is also compressed into the <strong>Field kit</strong> further down this page — tappable checklists, wiring pinouts, every credential and distance. Cards open in a high-contrast dark view built for sunlight and gloves. The whole curriculum also prints as a field guide.</p>
-<div class="wl-field-preview">
-${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key', 'Credentials & Defaults'], ['ruler', 'Distances & Geometry'], ['flask', 'Lane Test Procedure'], ['globe', 'Whitelist & Ports']].map(c => `<div class="wl-fc"><span>${UI(c[0], 16)}</span>${c[1]}</div>`).join('')}
-</div>`
+</div>
+<p style="text-align:center;margin-top:14px"><a href="#/glossary" data-qi="close-link">See the full glossary →</a></p>`
     }
   ];
+  let qiIdx = 0;
+  let qiEl = null;
 
-  let slideIdx = 0;
-  A.introSlideHtml = function () {
-    const s = slides[slideIdx];
-    const last = slideIdx === slides.length - 1;
-    return `<div class="intro-slide">
-      <span class="kicker">Intro · ${slideIdx + 1} of ${slides.length}</span>
-      <div class="intro-title">${esc(s.title)}</div>
-      ${s.body}
-      <div class="wl-nav">
-        <button class="btn secondary small" data-wl="back" ${slideIdx === 0 ? 'disabled' : ''}>← Back</button>
-        <div class="wl-dots">${slides.map((_, i) => `<span class="wl-dot${i === slideIdx ? ' on' : ''}" data-wl-dot="${i}"></span>`).join('')}</div>
-        ${last
-          ? `<span><button class="btn accent small" data-wl="tour">Take the 30-sec tour →</button> <button class="btn small" data-wl="start" style="margin-left:6px">Start M01 →</button></span>`
-          : `<button class="btn small" data-wl="next">Next →</button>`}
+  function renderQi() {
+    if (!qiEl) return;
+    const s = subjectSlides[qiIdx], last = qiIdx === subjectSlides.length - 1;
+    qiEl.querySelector('.qi-modal').innerHTML = `
+      <div class="qi-head">
+        <span class="kicker">Quick intro · ${qiIdx + 1} of ${subjectSlides.length}</span>
+        <button class="qi-x" data-qi="close" aria-label="Close">${UI('close', 16)}</button>
       </div>
-    </div>`;
+      <h3 class="qi-title">${esc(s.title)}</h3>
+      <div class="qi-body">${s.body}</div>
+      <div class="qi-nav">
+        <button class="btn secondary small" data-qi="back" ${qiIdx === 0 ? 'disabled' : ''}>← Back</button>
+        <div class="wl-dots">${subjectSlides.map((_, i) => `<span class="wl-dot${i === qiIdx ? ' on' : ''}" data-qi-dot="${i}"></span>`).join('')}</div>
+        ${last ? `<button class="btn accent small" data-qi="close">Done</button>` : `<button class="btn small" data-qi="next">Next →</button>`}
+      </div>`;
+  }
+  A.openQuickIntro = function () {
+    qiIdx = 0;
+    if (!qiEl) {
+      qiEl = document.createElement('div');
+      qiEl.className = 'qi-overlay';
+      qiEl.innerHTML = `<div class="qi-modal" role="dialog" aria-modal="true"></div>`;
+      document.body.appendChild(qiEl);
+    }
+    document.body.style.overflow = 'hidden';
+    renderQi();
   };
-  function repaintSlide() {
-    const slot = document.getElementById('introSlot');
-    if (slot) slot.innerHTML = A.introSlideHtml();
+  function closeQi() {
+    if (qiEl) { qiEl.remove(); qiEl = null; }
+    document.body.style.overflow = '';
   }
 
-  /* ---------- spotlight tour (rail layout) ---------- */
+  /* ============================================================
+     VIRTUAL TOUR — platform spotlight (repositions on scroll)
+     ============================================================ */
   const tourSteps = [
-    { sel: '.rail', title: 'Everything lives here', text: 'Five labeled destinations, always visible: Home, Modules, Field kit, Exam, and the printable Guide. The ring at the bottom tracks your overall progress.', pos: 'right' },
-    { sel: '#railModules', title: 'The module tree', text: 'Click Modules any time to slide out the full curriculum — 6 phases, 14 modules, with your progress dots. It closes as soon as you pick one.', pos: 'right' },
-    { sel: 'details.sect[data-sec="curriculum"]', title: 'Or browse right here', text: 'The home page holds everything in collapsible sections: this curriculum, the field kit, the glossary, and reference tools. Sections remember whether you left them open.', pos: 'top' },
-    { sel: '.search-box', title: 'Search everything', text: 'Any terminal (NC4), IP (10.0.0.1), distance, or password — search jumps straight to the lesson, field card, or glossary entry that has it.', pos: 'bottom' },
-    { sel: '.topbar .btn.accent', title: 'Field kit, one tap', text: 'The on-site layer: checklists, pinouts, and credentials in a dark, glove-friendly view for when you\'re standing at a gate cabinet.', pos: 'bottom' }
+    { sel: '.rail', title: 'Everything lives here', text: 'Six labelled destinations, always visible: Home, Modules, Field kit, Certification, Textbook and Admin. The ring at the bottom tracks your overall progress.', pos: 'right' },
+    { sel: '#heroActions', title: 'New to the subject?', text: 'Quick intro is a 2-minute primer on GMP Access itself — what it is, ExpressLane, and the jargon. This tour (which you can replay anytime) is about the platform.', pos: 'bottom' },
+    { sel: '#phaseGrid', title: 'Your curriculum & live progress', text: 'Six phases, fourteen modules. Each module checks off automatically when you finish its lessons and pass its knowledge check — and a phase checks off once all its modules are done.', pos: 'top' },
+    { sel: '#certBanner', title: 'Certification eligibility', text: 'The certification exam unlocks once every module is complete. This banner always shows where you stand and what\'s left.', pos: 'top' },
+    { sel: '.search-box', title: 'Search everything', text: 'Any terminal (NC4), IP (10.0.0.1), distance or password — search jumps straight to the lesson, field card, or glossary entry that has it.', pos: 'bottom' }
   ];
-  let tourIdx = -1, tourEls = null;
+  let tourIdx = -1, tourEls = null, tourElRef = null;
 
   function tourUI() {
     if (tourEls) return tourEls;
-    const scrim = document.createElement('div');
-    scrim.className = 'tour-scrim';
-    const hole = document.createElement('div');
-    hole.className = 'tour-hole';
-    const tip = document.createElement('div');
-    tip.className = 'tour-tip';
+    const scrim = document.createElement('div'); scrim.className = 'tour-scrim';
+    const hole = document.createElement('div'); hole.className = 'tour-hole';
+    const tip = document.createElement('div'); tip.className = 'tour-tip';
     document.body.appendChild(scrim); document.body.appendChild(hole); document.body.appendChild(tip);
     tourEls = { scrim, hole, tip };
     return tourEls;
   }
   function endTour() {
+    window.removeEventListener('scroll', reposition, true);
     if (tourEls) { tourEls.scrim.remove(); tourEls.hole.remove(); tourEls.tip.remove(); tourEls = null; }
-    tourIdx = -1;
+    tourIdx = -1; tourElRef = null;
     const st = A.appHooks.getState();
     if (!st.onboarded) { st.onboarded = true; A.appHooks.save(); }
   }
+  function place() {
+    if (!tourElRef || !tourEls) return;
+    const r = tourElRef.getBoundingClientRect();
+    const step = tourSteps[tourIdx];
+    const { hole, tip } = tourEls;
+    hole.style.cssText = `top:${r.top - 6}px;left:${r.left - 6}px;width:${r.width + 12}px;height:${r.height + 12}px;`;
+    const tw = 320, th = tip.offsetHeight || 170, pad = 14;
+    let top, left;
+    if (step.pos === 'right') { top = Math.max(70, r.top); left = r.right + pad; }
+    else if (step.pos === 'bottom') { top = r.bottom + pad; left = r.left + r.width / 2 - tw / 2; }
+    else { top = r.top - th - pad; left = r.left + r.width / 2 - tw / 2; }
+    left = Math.min(window.innerWidth - tw - 12, Math.max(12, left));
+    if (top + th > window.innerHeight - 12) top = Math.max(12, window.innerHeight - th - 12);
+    if (top < 12) top = 12;
+    tip.style.cssText = `top:${top}px;left:${left}px;width:${tw}px`;
+  }
+  function reposition() { place(); }
   function showStep() {
     while (tourIdx < tourSteps.length) {
       const el = document.querySelector(tourSteps[tourIdx] && tourSteps[tourIdx].sel);
@@ -4502,22 +4602,16 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
     }
     if (tourIdx >= tourSteps.length) { finishTour(); return; }
     const step = tourSteps[tourIdx];
-    const el = document.querySelector(step.sel);
-    el.scrollIntoView({ block: 'nearest' });
-    const r = el.getBoundingClientRect();
-    const { hole, tip } = tourUI();
-    hole.style.cssText = `top:${r.top - 6}px;left:${r.left - 6}px;width:${r.width + 12}px;height:${r.height + 12}px;`;
+    tourElRef = document.querySelector(step.sel);
+    const { tip } = tourUI();
     tip.innerHTML = `<span class="kicker">Tour · ${tourIdx + 1} of ${tourSteps.length}</span>
       <h4>${esc(step.title)}</h4><p>${esc(step.text)}</p>
-      <div class="tour-btns"><a href="#" data-tour="end">End tour</a><button class="btn small accent" data-tour="next">${tourIdx === tourSteps.length - 1 ? 'Finish' : 'Next →'}</button></div>`;
-    const tw = 320, pad = 14;
-    let top, left;
-    if (step.pos === 'right') { top = Math.max(70, r.top + 10); left = r.right + pad; }
-    else if (step.pos === 'bottom') { top = r.bottom + pad; left = Math.min(window.innerWidth - tw - 16, Math.max(16, r.left + r.width / 2 - tw / 2)); }
-    else { top = Math.max(70, r.top - pad - 160); left = Math.min(window.innerWidth - tw - 16, Math.max(16, r.left + r.width / 2 - tw / 2)); }
-    if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 16;
-    if (top < 8) top = r.bottom + pad;
-    tip.style.cssText = `top:${top}px;left:${left}px;width:${tw}px`;
+      <div class="tour-btns"><a href="#" data-tour="end">End tour</a>
+        <span>${tourIdx > 0 ? '<button class="btn secondary small" data-tour="back">Back</button> ' : ''}<button class="btn small accent" data-tour="next">${tourIdx === tourSteps.length - 1 ? 'Finish' : 'Next →'}</button></span></div>`;
+    // scroll target into view, then position (twice, to settle after layout/scroll)
+    tourElRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    place();
+    setTimeout(place, 260);
   }
   function finishTour() {
     endTour();
@@ -4534,40 +4628,44 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
     }), 50);
   }
   A.startTour = function () {
-    const go = () => setTimeout(() => { tourIdx = 0; tourUI(); showStep(); }, 140);
+    const go = () => setTimeout(() => {
+      tourIdx = 0; tourUI();
+      window.addEventListener('scroll', reposition, true);
+      showStep();
+    }, 160);
     if (location.hash === '#/' || location.hash === '' || location.hash === '#') go();
     else { location.hash = '#/'; go(); }
   };
 
   /* ---------- event wiring ---------- */
   document.addEventListener('click', e => {
-    const wl = e.target.closest('[data-wl]');
-    if (wl) {
-      e.preventDefault();
-      const act = wl.dataset.wl;
-      const st = A.appHooks.getState();
-      if (act === 'next') { slideIdx = Math.min(slides.length - 1, slideIdx + 1); repaintSlide(); }
-      else if (act === 'back') { slideIdx = Math.max(0, slideIdx - 1); repaintSlide(); }
-      else if (act === 'tour') {
-        st.onboarded = true; st.sections = st.sections || {}; st.sections.start = false;
-        A.appHooks.save(); slideIdx = 0; A.startTour();
-      }
-      else if (act === 'start') {
-        st.onboarded = true; st.sections = st.sections || {}; st.sections.start = false;
-        A.appHooks.save(); slideIdx = 0; location.hash = '#/module/m01';
-      }
+    // quick intro modal
+    const qi = e.target.closest('[data-qi]');
+    if (qi) {
+      const act = qi.dataset.qi;
+      if (act === 'next') { qiIdx = Math.min(subjectSlides.length - 1, qiIdx + 1); renderQi(); }
+      else if (act === 'back') { qiIdx = Math.max(0, qiIdx - 1); renderQi(); }
+      else if (act === 'close') { e.preventDefault(); closeQi(); }
+      else if (act === 'close-link') { closeQi(); } // let the link navigate
       return;
     }
-    const dot = e.target.closest('[data-wl-dot]');
-    if (dot) { slideIdx = +dot.dataset.wlDot; repaintSlide(); return; }
+    const qd = e.target.closest('[data-qi-dot]');
+    if (qd) { qiIdx = +qd.dataset.qiDot; renderQi(); return; }
+    if (qiEl && e.target.classList && e.target.classList.contains('qi-overlay')) { closeQi(); return; }
+    // tour
     const tr = e.target.closest('[data-tour]');
     if (tr) {
-      if (tr.dataset.tour === 'next') { tourIdx++; showStep(); }
-      else if (tr.dataset.tour === 'end') { e.preventDefault(); endTour(); }
+      const act = tr.dataset.tour;
+      if (act === 'next') { tourIdx++; showStep(); }
+      else if (act === 'back') { tourIdx = Math.max(0, tourIdx - 1); showStep(); }
+      else if (act === 'end') { e.preventDefault(); endTour(); }
       return;
     }
   });
-  window.addEventListener('resize', () => { if (tourIdx >= 0 && tourEls) showStep(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { if (qiEl) closeQi(); else if (tourEls) endTour(); }
+  });
+  window.addEventListener('resize', () => { if (tourIdx >= 0 && tourEls) place(); });
   window.addEventListener('hashchange', () => { if (tourIdx >= 0) endTour(); });
 })();
 
@@ -4725,6 +4823,7 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
   db.results = db.results || [];
   db.api = db.api || { baseUrl: '', token: '', lastSync: null };
   db.platformUrl = db.platformUrl || '';
+  db.certOverride = db.certOverride || false;
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} };
 
   let unlocked = true; // access control deferred to backend auth (per request: no restriction for now)
@@ -4745,7 +4844,8 @@ ${[['clipboard', 'Site Walk Checklist'], ['plug', 'WISE Wiring Pinout'], ['key',
 
   /* hook for the learner app to feed results into analytics */
   A.adminHooks = {
-    recordResult(r) { db.results.push(r); save(); }
+    recordResult(r) { db.results.push(r); save(); },
+    certOverride: () => !!db.certOverride
   };
 
   /* ---------- helpers ---------- */
@@ -4804,17 +4904,17 @@ ${body}`;
       const s = installerScore(email);
       return `<tr>
         <td>${esc(u ? u.name || email : email)}<br><span style="font-weight:400;color:var(--muted);font-size:.76rem">${esc(email)}</span></td>
-        <td>${s.initial !== null ? Math.round(s.initial) + '%' : '<span style="color:var(--muted)">no exam yet</span>'}</td>
+        <td>${s.initial !== null ? Math.round(s.initial) + '%' : '<span style="color:var(--muted)">no cert yet</span>'}</td>
         <td>${s.avgLaunch !== null ? s.avgLaunch.toFixed(1) + ' / 10' : '<span style="color:var(--muted)">—</span>'} <span style="color:var(--muted);font-size:.76rem">(${s.launches} rated)</span></td>
         <td>${s.live !== null ? `<b class="score-pill ${s.live >= 80 ? 'ok' : s.live >= 60 ? 'mid' : 'low'}">${s.live}</b>` : '—'}</td>
         <td>${s.flags ? `<span class="score-pill low" title="tab switches + navigation attempts + second tabs during exams">${UI('flag', 11)} ${s.flags}</span>` : '<span style="color:var(--good)">clean</span>'}</td>
       </tr>`;
     }).join('');
-    if (!rows) rows = '<tr><td colspan="5" style="color:var(--muted)">No installers yet — invite people, or have someone take the readiness exam on this device.</td></tr>';
+    if (!rows) rows = '<tr><td colspan="5" style="color:var(--muted)">No installers yet — invite people, or have someone take the certification exam on this device.</td></tr>';
     return `
-<p class="lede" style="font-size:.92rem">Live score = 30% initial exam + 70% rolling launch-rating average (each launch rated 0–10, one point per metric). Integrity flags come from exam focused-session monitoring.</p>
+<p class="lede" style="font-size:.92rem">Live score = 30% certification score + 70% rolling launch-rating average (each launch rated 0–10, one point per metric). Integrity flags come from exam focused-session monitoring.</p>
 <div class="tablewrap"><table class="spec">
-<tr><th>Installer</th><th>Initial (exam)</th><th>Launch avg</th><th>Live score</th><th>Exam integrity</th></tr>${rows}</table></div>
+<tr><th>Installer</th><th>Initial (cert)</th><th>Launch avg</th><th>Live score</th><th>Exam integrity</th></tr>${rows}</table></div>
 <h3 style="font-size:1.05rem;margin-top:1.6em">The 10 rating metrics</h3>
 <div class="tablewrap"><table class="spec wraprow"><tr><th>#</th><th>Metric (1 point each)</th></tr>
 ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).join('')}</table></div>`;
@@ -4825,7 +4925,7 @@ ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).joi
     const rows = db.users.map((u, i) => `<tr>
       <td>${esc(u.name || '—')}</td><td>${esc(u.email)}</td><td><span class="badge ${u.role === 'admin' ? 'progress' : 'todo'}">${u.role}</span></td>
       <td>${esc(new Date(u.invitedAt).toLocaleDateString())}</td>
-      <td><a href="mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent('Your GMP Access Installer Academy invite')}&body=${encodeURIComponent('Hi ' + (u.name || '') + ',\n\nYou\'ve been invited to the GMP Access Installer Academy (' + u.role + ').\n\nOpen the platform here: ' + inviteUrl + '\n\nWork through the 14 modules, then take the readiness exam. See you in the field!')}" class="btn small secondary">${UI('mail', 13)} Send invite</a>
+      <td><a href="mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent('Your GMP Access Installer Academy invite')}&body=${encodeURIComponent('Hi ' + (u.name || '') + ',\n\nYou\'ve been invited to the GMP Access Installer Academy (' + u.role + ').\n\nOpen the platform here: ' + inviteUrl + '\n\nWork through the 14 modules, then take the certification exam. See you in the field!')}" class="btn small secondary">${UI('mail', 13)} Send invite</a>
       <button class="btn small ghost" data-ad="deluser" data-i="${i}">remove</button></td>
     </tr>`).join('') || '<tr><td colspan="5" style="color:var(--muted)">No one invited yet.</td></tr>';
     return `
@@ -4842,7 +4942,7 @@ ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).joi
   function tabAnalytics() {
     const rows = db.results.slice().reverse().map(r => `<tr>
       <td>${esc(r.name || r.email || 'anonymous')}</td>
-      <td>${r.kind === 'exam' ? '<b>Readiness exam</b>' : 'Check · ' + esc(r.module || '')}</td>
+      <td>${r.kind === 'exam' ? '<b>Certification</b>' : 'Check · ' + esc(r.module || '')}</td>
       <td>${r.score}/${r.total} (${Math.round(r.pct)}%)</td>
       <td>${esc(new Date(r.ts).toLocaleString())}</td>
       <td>${r.integrity ? integrityChip(r.integrity) : '<span style="color:var(--muted)">n/a</span>'}</td>
@@ -4928,6 +5028,9 @@ ${issues.length ? `<div class="callout ${issues.some(i => i.installerRelated) ? 
   ${input('platformUrl', 'https://…link where the academy is hosted', db.platformUrl, 'url')}
   <button class="btn accent">Save</button>
 </form>
+<h3 style="font-size:1.05rem;margin-top:1.6em">Certification eligibility</h3>
+<label class="rate-row" style="max-width:560px"><input type="checkbox" id="certOverrideToggle"${db.certOverride ? ' checked' : ''}> Bypass the eligibility gate — allow the certification exam before all modules are complete <span style="color:var(--muted);font-weight:400">(testing only)</span></label>
+<p style="font-size:.8rem;color:var(--muted)">Off by default: installers must finish all 14 modules to unlock certification. Turn on only to QA the exam flow.</p>
 <h3 style="font-size:1.05rem;margin-top:1.6em">Data</h3>
 <p><button class="btn secondary small" data-ad="export">${UI('download', 13)} Export admin data (JSON)</button>
 ${db.sample ? `<button class="btn secondary small" data-ad="clearseed" style="margin-left:8px">${UI('close', 12)} Clear sample data</button>` : ''}</p>
@@ -5013,8 +5116,12 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     }
   });
 
-  /* live score preview while rating */
+  /* live score preview while rating + cert-override toggle */
   document.addEventListener('change', e => {
+    if (e.target && e.target.id === 'certOverrideToggle') {
+      db.certOverride = e.target.checked; save();
+      return;
+    }
     const f = e.target.closest('form[data-ad="rate"]');
     if (!f) return;
     let score = 0;
@@ -5026,8 +5133,8 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
 
 ;
 /* ============================================================
-   GMP Access Installer Academy — application engine v2
-   Icon rail + slide-over curriculum panel + merged home page.
+   GMP Access Installer Academy — application engine v3
+   Icon rail + standalone pages. Home = progress dashboard.
    ============================================================ */
 (function () {
   'use strict';
@@ -5035,8 +5142,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
   const D = window.DIAGRAMS;
   const $ = sel => document.querySelector(sel);
 
-  /* GMP pin + gate-arm mark — same shape language as GMP's own product icons
-     (a location pin containing a glyph unique to the product; gate-arm = Access). */
+  /* GMP pin + gate-arm mark — same shape language as GMP's own product icons. */
   const LOGO_MARK = `<svg viewBox="0 0 100 100" role="img" aria-label="GMP Access">
     <path d="M50 6C29 6 13 22 13 43c0 27 37 51 37 51s37-24 37-51C87 22 71 6 50 6z" fill="#23ad5e"/>
     <g transform="translate(50,42)">
@@ -5053,13 +5159,12 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
   state.quizzes = state.quizzes || {};
   state.exam = state.exam || null;
   state.fieldChecks = state.fieldChecks || {};
-  state.sections = state.sections || {};
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
   A.appHooks = { getState: () => state, save, rerender: () => route() };
 
   /* ---------- helpers ---------- */
   const mod = id => A.modules.find(m => m.id === id);
-  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const hydrate = html => html.replace(/\[\[DIAGRAM:(\w+)\]\]/g, (_, n) => (D[n] ? D[n]() : ''));
 
   function lessonDone(mid, lid) { return !!state.lessons[mid + '/' + lid]; }
@@ -5071,6 +5176,20 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     const any = m.lessons.some(l => lessonDone(m.id, l.id)) || state.quizzes[m.id];
     return any ? 'progress' : 'todo';
   }
+  function modulePct(m) {
+    const total = m.lessons.length + 1;
+    let done = m.lessons.filter(l => lessonDone(m.id, l.id)).length;
+    if (quizPassed(m.id)) done++;
+    return Math.round(done / total * 100);
+  }
+  function phaseComplete(pn) {
+    const mods = A.modules.filter(m => m.phase === pn);
+    return mods.length > 0 && mods.every(moduleComplete);
+  }
+  function phaseDoneCount(pn) {
+    const mods = A.modules.filter(m => m.phase === pn);
+    return { done: mods.filter(moduleComplete).length, total: mods.length };
+  }
   function overallPct() {
     let done = 0, total = 0;
     A.modules.forEach(m => {
@@ -5080,153 +5199,194 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     });
     return total ? Math.round(done / total * 100) : 0;
   }
-  function phasePct(pn) {
-    const mods = A.modules.filter(m => m.phase === pn);
-    const done = mods.filter(moduleComplete).length;
-    return `${done}/${mods.length} complete`;
+  function modulesDone() { return A.modules.filter(moduleComplete).length; }
+
+  /* time estimates (from per-module minutes) */
+  function totalMinutes() { return A.modules.reduce((s, m) => s + (m.minutes || 0), 0); }
+  function remainingMinutes() { return A.modules.filter(m => !moduleComplete(m)).reduce((s, m) => s + (m.minutes || 0), 0); }
+  function phaseMinutes(pn) { return A.modules.filter(m => m.phase === pn).reduce((s, m) => s + (m.minutes || 0), 0); }
+  function fmtDur(min) {
+    const h = Math.floor(min / 60), m = min % 60;
+    return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`;
   }
-  function secOpen(id, def) { return state.sections[id] === undefined ? def : !!state.sections[id]; }
+
+  /* certification eligibility — hard gate + admin override */
+  function certOverride() { return !!(A.adminHooks && A.adminHooks.certOverride && A.adminHooks.certOverride()); }
+  function certEligible() { return certOverride() || A.modules.every(moduleComplete); }
+
+  function pbar(pct) { return `<div class="pbar"><i style="width:${pct}%"></i></div>`; }
 
   /* ---------- rail ---------- */
   const RAIL = [
     { id: 'home', ico: 'home', label: 'Home', href: '#/', match: h => h === '#/' || h === '#' || h === '' },
-    { id: 'modules', ico: 'grid', label: 'Modules', panel: true, match: h => h.startsWith('#/module/') },
+    { id: 'modules', ico: 'grid', label: 'Modules', href: '#/modules', match: h => h.startsWith('#/module') },
     { id: 'field', ico: 'bolt', label: 'Field kit', href: '#/field', match: h => h.startsWith('#/field') },
-    { id: 'exam', ico: 'check', label: 'Exam', href: '#/exam', match: h => h === '#/exam' },
-    { id: 'guide', ico: 'printer', label: 'Guide', href: '#/guide', match: h => h === '#/guide' },
+    { id: 'cert', ico: 'check', label: 'Certification', href: '#/certification', match: h => h === '#/certification' || h === '#/exam' },
+    { id: 'textbook', ico: 'book', label: 'Textbook', href: '#/textbook', match: h => h === '#/textbook' || h === '#/guide' },
     { id: 'admin', ico: 'gear', label: 'Admin', href: '#/admin', match: h => h.startsWith('#/admin') }
   ];
   function renderRail(hash) {
-    const rail = $('#rail');
     let h = `<a class="rail-logo" href="#/" title="GMP Access Installer Academy">${LOGO_MARK}</a>`;
     RAIL.forEach(r => {
       const active = r.match(hash);
-      if (r.panel) h += `<button class="rail-item${active ? ' active' : ''}" id="railModules" title="Browse all modules"><span class="ri">${UI(r.ico, 19)}</span>${r.label}</button>`;
-      else h += `<a class="rail-item${active ? ' active' : ''}" href="${r.href}"><span class="ri">${UI(r.ico, 19)}</span>${r.label}</a>`;
+      h += `<a class="rail-item${active ? ' active' : ''}" href="${r.href}"><span class="ri">${UI(r.ico, 19)}</span>${r.label}</a>`;
     });
     h += `<div class="rail-spacer"></div>`;
     const pct = overallPct();
-    h += `<div class="rail-progress" title="Curriculum progress"><div class="ring" style="background:conic-gradient(var(--accent-bright) ${pct * 3.6}deg, var(--line) 0)"><span style="background:var(--bg);border-radius:50%;width:27px;height:27px;display:flex;align-items:center;justify-content:center">${pct}%</span></div></div>`;
-    rail.innerHTML = h;
-  }
-  function renderPanel(hash) {
-    const p = $('#navPanel');
-    let h = `<div class="np-head"><b>Curriculum</b><button class="np-close" aria-label="Close">${UI('close', 15)}</button></div>`;
-    A.phaseMeta.forEach(ph => {
-      const mods = A.modules.filter(m => m.phase === ph.n);
-      if (!mods.length) return;
-      h += `<div class="np-section">Phase ${ph.n} · ${esc(ph.title.split('—')[0].trim())}</div>`;
-      mods.forEach(m => {
-        const st = moduleState(m);
-        const tick = st === 'done' ? '<span class="tick">●</span>' : (st === 'progress' ? '<span class="tick partial">●</span>' : '');
-        const active = hash.startsWith('#/module/' + m.id);
-        h += `<a class="np-link${active ? ' active' : ''}" href="#/module/${m.id}"><span class="mcode">${m.code}</span><span>${esc(m.title)}</span>${tick}</a>`;
-      });
-    });
-    h += `<div class="np-section">Validate & reference</div>`;
-    h += `<a class="np-link${hash === '#/exam' ? ' active' : ''}" href="#/exam"><span class="mcode">${UI('check', 13)}</span><span>Final Readiness Exam${state.exam && state.exam.passed ? ' — passed' : ''}</span></a>`;
-    h += `<a class="np-link" href="#/guide"><span class="mcode">${UI('printer', 13)}</span><span>Printable Field Guide</span></a>`;
-    h += `<a class="np-link" href="#/coverage"><span class="mcode">${UI('map', 13)}</span><span>Source Coverage Map</span></a>`;
-    p.innerHTML = h;
+    h += `<div class="rail-progress" title="Curriculum progress"><div class="ring" style="background:conic-gradient(var(--green) ${pct * 3.6}deg, var(--line) 0)"><span style="background:var(--bg);border-radius:50%;width:27px;height:27px;display:flex;align-items:center;justify-content:center">${pct}%</span></div></div>`;
+    $('#rail').innerHTML = h;
   }
 
-  /* ---------- merged home ---------- */
-  function section(id, ico, title, sub, meta, bodyHtml, defOpen) {
-    return `<details class="sect" data-sec="${id}"${secOpen(id, defOpen) ? ' open' : ''}>
-      <summary><span class="sect-ico">${UI(ico, 18)}</span><span class="sect-tt"><b>${esc(title)}</b><span>${esc(sub)}</span></span><span class="sect-meta">${esc(meta || '')}</span><span class="sect-chev">${UI('chevron', 13)}</span></summary>
-      <div class="sect-body">${bodyHtml}</div></details>`;
-  }
+  /* ---------- HOME (progress dashboard) ---------- */
+  const RECAP = {
+    1: 'What GMP Access is, and how a lane turns a license plate into an open gate.',
+    2: 'Every lane & location device: WISE IO controller, cameras, lighting, POS, NUC, scanners.',
+    3: 'The 9-point site walk, gate wiring & loop logic, and LPR camera placement.',
+    4: 'Bench prep before install day: the NUC (Ubuntu, BIOS, TeamViewer) and WISE controllers.',
+    5: 'On site: wire the gate, find the board, test the loops, prove the arm, install the POS.',
+    6: 'Firewall whitelist, daily ports & endpoints, and a documented, supportable go-live.'
+  };
 
-  function viewHome(opts) {
-    opts = opts || {};
-    const pct = overallPct();
-    const modsDone = A.modules.filter(moduleComplete).length;
-    let resume = '';
-    outer: for (const m of A.modules) {
-      for (const l of m.lessons) {
-        if (!lessonDone(m.id, l.id)) { resume = `#/module/${m.id}/lesson/${l.id}`; break outer; }
-      }
-      if (!quizPassed(m.id)) { resume = `#/module/${m.id}/quiz`; break; }
+  function resumeHref() {
+    for (const m of A.modules) {
+      for (const l of m.lessons) if (!lessonDone(m.id, l.id)) return `#/module/${m.id}/lesson/${l.id}`;
+      if (!quizPassed(m.id)) return `#/module/${m.id}/quiz`;
     }
+    return null;
+  }
+
+  function viewHome() {
+    const pct = overallPct();
+    const done = modulesDone();
+    const resume = resumeHref();
+    const rem = remainingMinutes();
+
     let h = `<div class="home-hero">
       <span class="kicker">GMP Access · Partner Installer Program</span>
       <h2>Installer Academy</h2>
       <p>Everything needed to install, configure, validate, and support GMP Access deployments — built end-to-end from the <em>Access Install V3</em> guide.</p>
-      <div class="hero-actions">
-        ${resume ? `<a class="btn accent" href="${resume}">${pct ? 'Resume training' : 'Start Module M01'}</a>` : '<a class="btn accent" href="#/exam">Take the readiness exam</a>'}
-        <button class="btn secondary" data-action="tour">${UI('refresh', 14)} 30-sec tour</button>
+      <div class="hero-actions" id="heroActions">
+        ${resume ? `<a class="btn accent" href="${resume}">${pct ? 'Resume training' : 'Start Module M01'}</a>`
+                 : `<a class="btn accent" href="#/certification">Go to certification</a>`}
+        <button class="btn secondary" data-action="quick-intro">${UI('star', 14)} Quick intro</button>
+        <button class="btn ghost" data-action="tour">${UI('refresh', 14)} Take the tour</button>
       </div>
     </div>`;
 
-    // 1 · Start here
-    const startOpen = !state.onboarded;
-    h += section('start', 'star', 'Start here', 'New to GMP? A 6-step visual intro — no prior knowledge assumed.',
-      state.onboarded ? 'completed' : 'new',
-      `<div id="introSlot">${A.introSlideHtml()}</div>`, startOpen);
+    // progress summary strip
+    h += `<div class="prog-summary">
+      <div class="ps-main">
+        <div class="ps-top"><b>${pct}% complete</b><span>${done} of ${A.modules.length} modules · ${fmtDur(totalMinutes())} total${rem ? ` · ~${fmtDur(rem)} left` : ''}</span></div>
+        ${pbar(pct)}
+      </div>
+      <div class="ps-stats">
+        <div class="ps-stat"><div class="n">${done}/${A.modules.length}</div><div class="l">Modules</div></div>
+        <div class="ps-stat"><div class="n">${A.phaseMeta.filter(p => phaseComplete(p.n)).length}/${A.phaseMeta.length}</div><div class="l">Phases</div></div>
+        <div class="ps-stat"><div class="n">${state.exam ? (state.exam.passed ? 'PASS' : Math.round(state.exam.best) + '%') : '—'}</div><div class="l">Certification</div></div>
+      </div>
+    </div>`;
 
-    // 2 · Progress
-    h += section('progress', 'gauge', 'Your progress', 'Lessons, knowledge checks, and exam status on this device.', pct + '%',
-      `<div class="stat-row">
-        <div class="stat"><div class="n">${pct}%</div><div class="l">Overall</div></div>
-        <div class="stat"><div class="n">${modsDone}/14</div><div class="l">Modules complete</div></div>
-        <div class="stat"><div class="n">${Object.keys(state.quizzes).length}/14</div><div class="l">Checks taken</div></div>
-        <div class="stat"><div class="n">${state.exam ? (state.exam.passed ? 'PASS' : Math.round(state.exam.best) + '%') : '—'}</div><div class="l">Readiness exam</div></div>
-      </div>`, state.onboarded === true);
+    // certification eligibility banner
+    const eligible = certEligible();
+    const remain = A.modules.length - done;
+    if (eligible) {
+      h += `<div class="cert-banner ok" id="certBanner">
+        <div class="cb-ico">${UI('check', 22)}</div>
+        <div class="cb-body">
+          <b>You're eligible for certification${!A.modules.every(moduleComplete) ? ' <span class="cb-note">(admin override active)</span>' : ''}</b>
+          <span>${state.exam && state.exam.passed ? 'Passed — best score ' + Math.round(state.exam.best) + '%. You can retake to raise it.' : 'All modules complete. Take the certification exam when you\'re ready.'}</span>
+        </div>
+        <a class="btn accent" href="#/certification">${state.exam && state.exam.passed ? 'Retake' : 'Start certification'}</a>
+      </div>`;
+    } else {
+      h += `<div class="cert-banner locked" id="certBanner">
+        <div class="cb-ico">${UI('lock', 20)}</div>
+        <div class="cb-body">
+          <b>Certification unlocks when all ${A.modules.length} modules are complete</b>
+          <span>${remain} module${remain === 1 ? '' : 's'} remaining. Progress checks off automatically as you finish each one.</span>
+        </div>
+        <a class="btn secondary" href="#/modules">View modules</a>
+      </div>`;
+    }
 
-    // 3 · Curriculum
-    let cur = '';
-    A.phaseMeta.forEach((ph, pi) => {
+    // phase grid
+    h += `<h3 class="home-h3">Module progress &amp; certification eligibility</h3>`;
+    h += `<div class="phase-grid" id="phaseGrid">`;
+    A.phaseMeta.forEach(ph => {
       const mods = A.modules.filter(m => m.phase === ph.n);
       if (!mods.length) return;
-      const phOpen = secOpen('phase' + ph.n, pi === 0);
-      cur += `<details class="phase" data-sec="phase${ph.n}"${phOpen ? ' open' : ''}>
-        <summary><span class="ph-num">PHASE ${ph.n}</span><span class="ph-title">${esc(ph.title)}</span><span class="ph-meta">${phasePct(ph.n)}</span><span class="sect-chev">${UI('chevron', 12)}</span></summary>
+      const pc = phaseDoneCount(ph.n);
+      const complete = phaseComplete(ph.n);
+      const title = ph.title.split('—')[0].trim();
+      h += `<div class="phase-card${complete ? ' done' : ''}">
+        <div class="pcard-head">
+          <span class="pc-num">PHASE ${ph.n}</span>
+          <span class="pc-check">${complete ? UI('check', 16) : `${pc.done}/${pc.total}`}</span>
+        </div>
+        <div class="pc-title">${esc(title)}</div>
+        <div class="pc-meta">${fmtDur(phaseMinutes(ph.n))} · ${pc.total} modules</div>
+        <div class="pc-mods">`;
+      mods.forEach(m => {
+        const st = moduleState(m);
+        const mp = modulePct(m);
+        const mark = st === 'done'
+          ? `<span class="pm-check done">${UI('check', 13)}</span>`
+          : st === 'progress'
+            ? `<span class="pm-check prog">${mp}%</span>`
+            : `<span class="pm-check todo"></span>`;
+        h += `<a class="pm-row${st === 'done' ? ' is-done' : ''}" href="#/module/${m.id}">
+          ${mark}
+          <span class="pm-code">${m.code}</span>
+          <span class="pm-title">${esc(m.title)}</span>
+          <span class="pm-min">${m.minutes}m</span>
+        </a>`;
+      });
+      h += `</div></div>`;
+    });
+    h += `</div>`;
+
+    // quick recap
+    h += `<h3 class="home-h3">Quick recap — what this program covers</h3>
+      <div class="recap">`;
+    A.phaseMeta.forEach(ph => {
+      h += `<div class="recap-row"><span class="rc-n">P${ph.n}</span><span class="rc-t"><b>${esc(ph.title.split('—')[0].trim())}.</b> ${esc(RECAP[ph.n] || '')}</span></div>`;
+    });
+    h += `</div>`;
+
+    return { crumb: '<b>Home</b>', html: h };
+  }
+
+  /* ---------- MODULES (curriculum page) ---------- */
+  function viewModules() {
+    let h = `<span class="kicker">Curriculum</span><h2 class="page-title">Modules</h2>
+      <p class="lede">6 phases, ${A.modules.length} modules, in real deployment order — ${fmtDur(totalMinutes())} of training. Work them top to bottom, or jump to any module.</p>`;
+    A.phaseMeta.forEach(ph => {
+      const mods = A.modules.filter(m => m.phase === ph.n);
+      if (!mods.length) return;
+      const pc = phaseDoneCount(ph.n);
+      h += `<div class="mods-phase">
+        <div class="mods-phase-head"><span class="ph-num">PHASE ${ph.n}</span><span class="ph-title">${esc(ph.title)}</span>
+          <span class="ph-meta">${phaseComplete(ph.n) ? UI('check', 14) + ' complete' : pc.done + '/' + pc.total + ' · ' + fmtDur(phaseMinutes(ph.n))}</span></div>
         <div class="mod-grid">`;
       mods.forEach(m => {
         const st = moduleState(m);
-        const badge = st === 'done' ? '<span class="badge done">Complete</span>' : st === 'progress' ? '<span class="badge progress">In progress</span>' : '<span class="badge todo">Not started</span>';
-        cur += `<a class="mod-card" href="#/module/${m.id}">
+        const badge = st === 'done' ? '<span class="badge done">Complete</span>' : st === 'progress' ? `<span class="badge progress">${modulePct(m)}%</span>` : '<span class="badge todo">Not started</span>';
+        h += `<a class="mod-card" href="#/module/${m.id}">
           <div class="mc-top"><span class="mcode">${m.code}</span>${badge}</div>
           <h4>${esc(m.title)}</h4>
           <div class="mc-tag">${esc(m.tagline)}</div>
           <div class="mc-meta"><span>≈${m.minutes} min</span><span>${m.lessons.length} lessons</span><span>${m.quiz.length}-question check</span></div>
         </a>`;
       });
-      cur += `</div></details>`;
+      h += `</div></div>`;
     });
-    h += section('curriculum', 'grid', 'Curriculum', '6 phases · 14 modules · in real deployment order.', `${modsDone}/14 complete`, cur, true);
-
-    // 4 · Field kit
-    let fk = `<p class="fk-note">Quick reference for on-site work. Cards open in a high-contrast dark view built for sunlight and gloves; checklists remember their state on this device.</p><div class="fk-grid">`;
-    A.fieldCards.forEach(c => {
-      fk += `<a class="fk-card" href="#/field/${c.id}"><div class="fc-ico">${UI(c.icon, 22)}</div><h4>${esc(c.title)}</h4><p>${esc(c.desc)}</p></a>`;
-    });
-    fk += `</div>`;
-    h += section('field', 'bolt', 'Field kit', 'Checklists, pinouts, credentials, distances — for the gate cabinet.', A.fieldCards.length + ' cards', fk, state.onboarded === true);
-
-    // 5 · Glossary
-    let gl = `<div class="gloss-grid">`;
-    A.glossary.forEach(g => {
-      gl += `<div class="gloss-card"><div class="wl-ico">${A.glossIcon(g.icon)}</div><h4>${esc(g.term)}</h4><p>${esc(g.def)}</p><a href="#/module/${g.mod}">Covered in ${g.mod.toUpperCase()} →</a></div>`;
-    });
-    gl += `</div>`;
-    h += section('glossary', 'book', 'Glossary', 'Every term in plain English, linked to the module that teaches it.', A.glossary.length + ' terms', gl, false);
-
-    // 6 · Reference
-    h += section('reference', 'printer', 'Reference & validation', 'The exam, the printable textbook, and the source coverage map.', '',
-      `<div class="ref-row">
-        <a class="mod-card" href="#/exam"><div class="mc-top"><span class="mcode">EXAM</span>${state.exam && state.exam.passed ? '<span class="badge done">Passed</span>' : '<span class="badge todo">30 questions</span>'}</div><h4>Final Readiness Exam</h4><div class="mc-tag">Drawn from every module · pass mark 80%.</div></a>
-        <a class="mod-card" href="#/guide"><div class="mc-top"><span class="mcode">PRINT</span></div><h4>Printable Field Guide</h4><div class="mc-tag">The full curriculum as a print-ready textbook (Save as PDF).</div></a>
-        <a class="mod-card" href="#/coverage"><div class="mc-top"><span class="mcode">MAP</span></div><h4>Source Coverage Map</h4><div class="mc-tag">Every section of Access Install V3 → where it lives here.</div></a>
-      </div>`, false);
-
-    return { crumb: '<b>Home</b>', html: h, scrollTo: opts.scrollTo };
+    return { crumb: '<b>Modules</b>', html: h };
   }
 
-  /* ---------- module / lesson (unchanged views) ---------- */
+  /* ---------- module / lesson ---------- */
   function viewModule(m) {
     let h = `<span class="kicker">Phase ${m.phase} · ${esc(m.code)}</span><h2 class="page-title">${esc(m.title)}</h2><p class="lede">${esc(m.tagline)}</p>`;
-    h += `<div class="lesson-meta"><span>≈${m.minutes} min</span><span>${m.lessons.length} lessons</span><span>${m.quiz.length}-question knowledge check</span></div>`;
+    h += `<div class="lesson-meta"><span>≈${m.minutes} min</span><span>${m.lessons.length} lessons</span><span>${m.quiz.length}-question knowledge check</span>${moduleComplete(m) ? `<span style="color:var(--green-deep);font-weight:700">${UI('check', 12)} Module complete</span>` : ''}</div>`;
     h += `<div class="objectives"><h4>You will be able to</h4><ul>${m.objectives.map(o => `<li>${esc(o)}</li>`).join('')}</ul></div>`;
     h += '<ul class="lesson-list">';
     m.lessons.forEach((l, i) => {
@@ -5236,6 +5396,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     const q = state.quizzes[m.id];
     h += `<li><a class="lesson-row" href="#/module/${m.id}/quiz"><span class="num">${UI('pencil', 14)}</span><span class="t">Knowledge check</span><span class="state${quizPassed(m.id) ? ' done' : ''}">${q ? `${q.score}/${q.total}` + (quizPassed(m.id) ? ' — passed' : ' — retake') : m.quiz.length + ' questions'}</span></a></li>`;
     h += '</ul>';
+    h += `<div class="lesson-nav"><a class="btn secondary" href="#/modules">← All modules</a></div>`;
     return { crumb: `${m.code} · <b>${esc(m.title)}</b>`, html: h };
   }
 
@@ -5250,7 +5411,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     else h += `<a class="btn secondary" href="#/module/${m.id}">← Module overview</a>`;
     h += `<span class="spacer"></span>`;
     const nextHref = i < m.lessons.length - 1 ? `#/module/${m.id}/lesson/${m.lessons[i + 1].id}` : `#/module/${m.id}/quiz`;
-    h += `<button class="btn ${done ? 'secondary' : ''}" id="markBtn" data-m="${m.id}" data-l="${l.id}" data-next="${nextHref}">${done ? 'Completed ✓ — ' + (i < m.lessons.length - 1 ? 'next lesson' : 'knowledge check') + ' →' : 'Mark complete & continue →'}</button>`;
+    h += `<button class="btn ${done ? 'secondary' : ''}" id="markBtn" data-m="${m.id}" data-l="${l.id}" data-next="${nextHref}">${done ? 'Completed — ' + (i < m.lessons.length - 1 ? 'next lesson' : 'knowledge check') + ' →' : 'Mark complete & continue →'}</button>`;
     h += `</div>`;
     return { crumb: `${m.code} · <b>${esc(l.title)}</b>`, html: h };
   }
@@ -5264,6 +5425,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     h += quizBody(m.quiz);
     return { crumb: `${m.code} · <b>Knowledge check</b>`, html: h };
   }
+
   let examStarted = false;
   let examQuestions = null;
   function shuffle(arr) {
@@ -5280,28 +5442,41 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       return Object.assign({}, q, { options: order.map(i => q.options[i]), answer: order.indexOf(q.answer) });
     });
   }
-  function viewExam() {
+  function viewCertification() {
     let h = `<span class="kicker">Final validation</span><h2 class="page-title">${esc(A.examMeta.title)}</h2>
     <p class="lede">${A.exam.length} questions drawn from every module — hardware, lane design, wiring, configuration, testing, POS, and network readiness. Pass mark: ${A.examMeta.pass}%.</p>`;
+
     if (!examStarted) {
+      if (!certEligible()) {
+        const remain = A.modules.length - modulesDone();
+        h += `<div class="cert-locked">
+          <div class="cl-ico">${UI('lock', 30)}</div>
+          <h3>Certification is locked</h3>
+          <p>You need to complete all ${A.modules.length} training modules before taking the certification exam. <b>${remain} module${remain === 1 ? '' : 's'} remaining.</b></p>
+          ${pbar(overallPct())}
+          <p style="margin-top:16px"><a class="btn accent" href="#/modules">Continue training →</a></p>
+        </div>`;
+        return { crumb: '<b>Certification</b>', html: h };
+      }
       if (state.exam) h += `<div class="callout ${state.exam.passed ? 'good' : 'warn'}"><span class="co-label">Previous best</span><p>${Math.round(state.exam.best)}% — ${state.exam.passed ? 'passed. Retaking only raises your record.' : 'not yet passing. Review the flagged modules and retake.'}</p></div>`;
       h += `<div class="exam-cover">
         <h3 style="margin:.2em 0 .5em">Before you begin</h3>
         <form id="examProfile" class="ad-form" style="margin:10px 0 4px">
           <input class="ad-in" name="pname" placeholder="Your name" value="${esc(state.profile ? state.profile.name : '')}" required>
           <input class="ad-in" name="pemail" type="email" placeholder="you@company.com" value="${esc(state.profile ? state.profile.email : '')}" required>
-          <button class="btn accent">Begin exam →</button>
+          <button class="btn accent">Begin certification →</button>
         </form>
-        <p class="exam-rules">This is a focused session: complete it in this window, in one sitting. Session activity is recorded with your attempt.</p>
+        <p class="exam-rules">This is a focused session: complete it in this window, in one sitting. Questions and answers are shuffled per attempt, and session activity is recorded with your result.</p>
       </div>`;
-      return { crumb: '<b>Final Readiness Exam</b>', html: h };
+      return { crumb: '<b>Certification</b>', html: h };
     }
     if (!examQuestions) examQuestions = shuffleExamQuestions();
     quizRun = { mid: 'exam', questions: examQuestions, answers: new Array(examQuestions.length).fill(null) };
     h += `<div class="exam-live-bar"><span>Focused session in progress — answer all ${A.exam.length} questions.</span><button class="btn small ghost" data-action="abandon-exam">Abandon attempt</button></div>`;
     h += quizBody(examQuestions);
-    return { crumb: '<b>Final Readiness Exam · in progress</b>', html: h };
+    return { crumb: '<b>Certification · in progress</b>', html: h };
   }
+
   function quizBody(questions) {
     let h = '';
     questions.forEach((q, qi) => {
@@ -5349,8 +5524,8 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
         score, total: qs.length, pct, integrity, ts: Date.now()
       });
       res.innerHTML = `<div class="quiz-score"><div class="big">${score}/${qs.length} — ${Math.round(pct)}%</div>
-        <p>${passed ? UI('check', 15) + ' Readiness exam passed. You have demonstrated end-to-end command of the GMP Access install program — hardware through handoff.' : `Pass mark is ${A.examMeta.pass}%. Review the modules referenced in the questions you missed, then retake.`}</p>
-        <p><a class="btn accent" href="#/exam">Retake</a> <a class="btn secondary" href="#/" style="margin-left:8px">Home</a></p></div>`;
+        <p>${passed ? UI('check', 15) + ' Certified. You have demonstrated end-to-end command of the GMP Access install program — hardware through handoff.' : `Pass mark is ${A.examMeta.pass}%. Review the modules referenced in the questions you missed, then retake.`}</p>
+        <p><a class="btn accent" href="#/certification">Retake</a> <a class="btn secondary" href="#/" style="margin-left:8px">Home</a></p></div>`;
     } else {
       state.quizzes[quizRun.mid] = { score, total: qs.length, ts: Date.now() };
       save();
@@ -5362,8 +5537,9 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       const m = mod(quizRun.mid);
       const idx = A.modules.indexOf(m);
       const next = A.modules[idx + 1];
+      const justCompleted = passed && moduleLessonsDone(m);
       res.innerHTML = `<div class="quiz-score"><div class="big">${score}/${qs.length}</div>
-        <p>${passed ? UI('check', 15) + ' Knowledge check passed' + (moduleLessonsDone(m) ? ' — module complete.' : ' — finish the remaining lessons to complete the module.') : 'Below 70% — review the lessons and retake to complete the module.'}</p>
+        <p>${passed ? UI('check', 15) + ' Knowledge check passed' + (justCompleted ? ' — module complete and checked off on your Home dashboard.' : ' — finish the remaining lessons to complete the module.') : 'Below 70% — review the lessons and retake to complete the module.'}</p>
         <p>${passed && next ? `<a class="btn accent" href="#/module/${next.id}">Next module: ${esc(next.code)} →</a>` : `<a class="btn accent" href="#/module/${quizRun.mid}/quiz">Retake</a>`}
         <a class="btn secondary" href="#/module/${quizRun.mid}" style="margin-left:8px">Module overview</a></p></div>`;
       renderRail(location.hash || '#/');
@@ -5371,17 +5547,27 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     res.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  /* ---------- field card (dark on-site view) ---------- */
+  /* ---------- field kit (landing page + dark card view) ---------- */
+  function viewFieldKit() {
+    let h = `<span class="kicker">On-site reference</span><h2 class="page-title">Field kit</h2>
+      <p class="lede">Quick reference for on-site work. Cards open in a high-contrast dark view built for sunlight and gloves; checklists remember their state on this device.</p>
+      <div class="fk-grid">`;
+    A.fieldCards.forEach(c => {
+      h += `<a class="fk-card" href="#/field/${c.id}"><div class="fc-ico">${UI(c.icon, 22)}</div><h4>${esc(c.title)}</h4><p>${esc(c.desc)}</p></a>`;
+    });
+    h += `</div>`;
+    return { crumb: '<b>Field kit</b>', html: h };
+  }
   function viewFieldCard(cardId) {
     const c = A.fieldCards.find(x => x.id === cardId);
-    if (!c) return viewHome({ scrollTo: 'field' });
+    if (!c) return viewFieldKit();
     document.body.classList.add('field-mode');
     let h = `<div class="field-head"><div><span class="kicker">Field kit · on-site view</span><h2>${UI(c.icon, 22)} ${esc(c.title)}</h2></div></div><div class="field-panel">`;
     if (c.checklist) {
       const st = state.fieldChecks[c.id] || {};
       h += `<ul class="checklist">`;
       c.checklist.forEach((item, i) => {
-        h += `<li data-card="${c.id}" data-i="${i}" class="${st[i] ? 'done' : ''}"><span class="box">✓</span><span class="txt">${item.t}${item.why ? `<span class="why">${item.why}</span>` : ''}</span></li>`;
+        h += `<li data-card="${c.id}" data-i="${i}" class="${st[i] ? 'done' : ''}"><span class="box">${UI('check', 13)}</span><span class="txt">${item.t}${item.why ? `<span class="why">${item.why}</span>` : ''}</span></li>`;
       });
       h += `</ul><p style="margin-top:14px"><button class="btn secondary small" id="resetChecks" data-card="${c.id}">Reset checklist</button></p>`;
     }
@@ -5391,15 +5577,25 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     return { crumb: `Field kit · <b>${esc(c.title)}</b>`, html: `<div class="field-wrap">${h}</div>`, bare: true };
   }
 
+  /* ---------- glossary page ---------- */
+  function viewGlossary() {
+    let h = `<span class="kicker">Reference</span><h2 class="page-title">Glossary</h2>
+      <p class="lede">Every term the curriculum and the field will throw at you, in plain English — grounded in the Access Install V3 guide.</p>
+      <div class="gloss-grid">`;
+    A.glossary.forEach(g => {
+      h += `<div class="gloss-card"><div class="wl-ico">${A.glossIcon(g.icon)}</div><h4>${esc(g.term)}</h4><p>${esc(g.def)}</p><a href="#/module/${g.mod}">Covered in ${g.mod.toUpperCase()} →</a></div>`;
+    });
+    h += `</div>`;
+    return { crumb: '<b>Glossary</b>', html: h };
+  }
+
   /* ---------- coverage map ---------- */
   function viewCoverage() {
     let h = `<span class="kicker">Content fidelity</span><h2 class="page-title">Source Coverage Map</h2>
     <p class="lede">Every section of <em>GMP Access Install V3</em> mapped to where it lives in this academy. Ambiguities in the source are flagged in-line in the lessons rather than silently resolved.</p>
     <div class="tablewrap"><table class="spec wraprow">
     <tr><th>Source section (page)</th><th>Location here</th><th>Treatment</th></tr>`;
-    A.coverage.forEach(r => {
-      h += `<tr class="cov-row"><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`;
-    });
+    A.coverage.forEach(r => { h += `<tr class="cov-row"><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`; });
     h += `</table></div>
     <div class="callout ambiguity"><span class="co-label">Known source ambiguities — flagged, not guessed</span>
     <ul>
@@ -5414,19 +5610,20 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     return { crumb: '<b>Coverage map</b>', html: h };
   }
 
-  /* ---------- printable guide ---------- */
-  function viewGuide() {
-    let h = `<div class="print-controls no-print"><b style="font-size:.9rem">Printable Field Guide</b>
+  /* ---------- textbook (printable) ---------- */
+  function viewTextbook() {
+    let h = `<div class="print-controls no-print"><b style="font-size:.9rem">Installer Textbook</b>
       <span style="color:var(--muted);font-size:.8rem;flex:1">Complete curriculum + field reference, print-optimized. Use your browser's "Save as PDF" for a downloadable copy.</span>
+      <a class="btn secondary small" href="#/glossary">Glossary</a>
+      <a class="btn secondary small" href="#/coverage">Coverage map</a>
       <button class="btn accent" onclick="window.print()">Print / Save as PDF</button></div>
     <div class="guide">
       <div class="g-cover"><p class="kicker">GMP Access · Partner Installer Program</p>
-      <h1>Installer Field Guide</h1>
+      <h1>Installer Textbook</h1>
       <p>The complete GMP Access (IoT GateKit) installation curriculum<br>compiled from <em>Access Install V3</em></p>
       <p class="src">For authorized use only · Generated by the GMP Access Installer Academy</p></div>`;
     A.phaseMeta.forEach(p => {
-      const mods = A.modules.filter(m => m.phase === p.n);
-      mods.forEach(m => {
+      A.modules.filter(m => m.phase === p.n).forEach(m => {
         h += `<div class="g-module"><h2>${esc(m.code)} — ${esc(m.title)}</h2><p><em>${esc(m.tagline)}</em></p>`;
         m.lessons.forEach(l => { h += `<div class="g-lesson"><h3>${esc(l.title)}</h3><div class="prose">${hydrate(l.html)}</div></div>`; });
         h += `</div>`;
@@ -5440,7 +5637,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       h += `<p class="src">Source: ${esc(c.source)}</p></div>`;
     });
     h += `</div></div>`;
-    return { crumb: '<b>Printable Field Guide</b>', html: h, wide: true, noPad: true };
+    return { crumb: '<b>Textbook</b>', html: h, wide: true, noPad: true };
   }
 
   /* ---------- search ---------- */
@@ -5456,9 +5653,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
       const t = (c.title + ' ' + c.desc + ' ' + (c.html ? strip(c.html) : '') + ' ' + (c.checklist ? c.checklist.map(i => i.t).join(' ') : '')).toLowerCase();
       searchIndex.push({ where: `Field · ${c.title}`, text: t, href: `#/field/${c.id}` });
     });
-    A.glossary.forEach(g => {
-      searchIndex.push({ where: `Glossary · ${g.term}`, text: (g.term + ' ' + g.def).toLowerCase(), href: `#/glossary` });
-    });
+    A.glossary.forEach(g => searchIndex.push({ where: `Glossary · ${g.term}`, text: (g.term + ' ' + g.def).toLowerCase(), href: `#/glossary` }));
     return searchIndex;
   }
   function doSearch(q) {
@@ -5477,59 +5672,45 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
   }
 
   /* ---------- router ---------- */
-  function closePanel() { document.body.classList.remove('panel-open'); }
   function route() {
     const hash = location.hash || '#/';
-    // exam lock: while a focused session is running, quietly log & bounce navigation
-    if (window.PROCTOR && window.PROCTOR.active && hash !== '#/exam') {
+    // certification lock: while a focused session runs, quietly log & bounce navigation
+    if (window.PROCTOR && window.PROCTOR.active && hash !== '#/certification' && hash !== '#/exam') {
       window.PROCTOR.note('nav-attempt', hash);
-      location.hash = '#/exam';
+      location.hash = '#/certification';
       return;
     }
     document.body.classList.remove('field-mode');
-    closePanel();
     let v;
     const parts = hash.slice(2).split('/');
-    if (hash === '#/' || hash === '#') v = viewHome();
-    else if (parts[0] === 'welcome') v = viewHome({ scrollTo: 'start', open: 'start' });
-    else if (parts[0] === 'glossary') v = viewHome({ scrollTo: 'glossary', open: 'glossary' });
-    else if (parts[0] === 'field' && !parts[1]) v = viewHome({ scrollTo: 'field', open: 'field' });
-    else if (parts[0] === 'field' && parts[1]) v = viewFieldCard(parts[1]);
-    else if (parts[0] === 'module' && parts[1]) {
+    const p0 = parts[0];
+    if (hash === '#/' || hash === '#' || p0 === '' || p0 === 'welcome') v = viewHome();
+    else if (p0 === 'modules') v = viewModules();
+    else if (p0 === 'module' && parts[1]) {
       const m = mod(parts[1]);
-      if (!m) v = viewHome();
-      else if (parts[2] === 'lesson' && parts[3]) {
-        const l = m.lessons.find(x => x.id === parts[3]);
-        v = l ? viewLesson(m, l) : viewModule(m);
-      }
+      if (!m) v = viewModules();
+      else if (parts[2] === 'lesson' && parts[3]) { const l = m.lessons.find(x => x.id === parts[3]); v = l ? viewLesson(m, l) : viewModule(m); }
       else if (parts[2] === 'quiz') v = viewQuiz(m);
       else v = viewModule(m);
     }
-    else if (parts[0] === 'exam') v = viewExam();
-    else if (parts[0] === 'admin') v = A.viewAdmin(parts.slice(1));
-    else if (parts[0] === 'coverage') v = viewCoverage();
-    else if (parts[0] === 'guide') v = viewGuide();
+    else if (p0 === 'field' && parts[1]) v = viewFieldCard(parts[1]);
+    else if (p0 === 'field') v = viewFieldKit();
+    else if (p0 === 'glossary') v = viewGlossary();
+    else if (p0 === 'certification' || p0 === 'exam') v = viewCertification();
+    else if (p0 === 'admin') v = A.viewAdmin(parts.slice(1));
+    else if (p0 === 'coverage') v = viewCoverage();
+    else if (p0 === 'textbook' || p0 === 'guide') v = viewTextbook();
     else v = viewHome();
-
-    // route-level section opening (e.g. #/glossary)
-    if (v.scrollTo || (parts[0] === 'welcome' || parts[0] === 'glossary' || (parts[0] === 'field' && !parts[1]))) {
-      const target = v.scrollTo;
-      if (target) state.sections[target] = true;
-    }
 
     const content = $('#content');
     content.className = 'content' + (v.wide ? ' wide' : '');
-    if (v.noPad) content.style.padding = '0'; else content.style.padding = '';
-    if (v.bare) content.style.maxWidth = 'none'; else content.style.maxWidth = '';
+    content.style.padding = v.noPad ? '0' : '';
+    content.style.maxWidth = v.bare ? 'none' : '';
     content.innerHTML = v.html;
     $('#crumb').innerHTML = v.crumb || '';
     $('#searchResults').style.display = 'none';
     renderRail(hash);
-    renderPanel(hash);
-    if (v.scrollTo) {
-      const sec = document.querySelector(`details.sect[data-sec="${v.scrollTo}"]`);
-      if (sec) { sec.open = true; setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); }
-    } else window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }
 
   /* ---------- events ---------- */
@@ -5537,12 +5718,7 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     const opt = e.target.closest('.opt');
     if (opt) { handleOptionClick(opt); return; }
     const mark = e.target.closest('#markBtn');
-    if (mark) {
-      state.lessons[mark.dataset.m + '/' + mark.dataset.l] = true;
-      save();
-      location.hash = mark.dataset.next;
-      return;
-    }
+    if (mark) { state.lessons[mark.dataset.m + '/' + mark.dataset.l] = true; save(); location.hash = mark.dataset.next; return; }
     const check = e.target.closest('.checklist li');
     if (check && check.dataset.card) {
       const cid = check.dataset.card, i = check.dataset.i;
@@ -5554,14 +5730,10 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     }
     const reset = e.target.closest('#resetChecks');
     if (reset) { delete state.fieldChecks[reset.dataset.card]; save(); route(); return; }
-    if (e.target.closest('#railModules') || e.target.closest('#hamburger')) {
-      document.body.classList.toggle('panel-open');
-      return;
-    }
-    if (e.target.closest('.np-close') || e.target.closest('.panel-scrim')) { closePanel(); return; }
-    if (e.target.closest('.np-link')) closePanel();
     const tourBtn = e.target.closest('[data-action="tour"]');
     if (tourBtn) { A.startTour(); return; }
+    const qi = e.target.closest('[data-action="quick-intro"]');
+    if (qi) { if (A.openQuickIntro) A.openQuickIntro(); return; }
     const abandon = e.target.closest('[data-action="abandon-exam"]');
     if (abandon) {
       const integrity = window.PROCTOR ? window.PROCTOR.stop('abandoned') : null;
@@ -5575,14 +5747,6 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     }
     if (!e.target.closest('.search-box')) $('#searchResults').style.display = 'none';
   });
-  // persist collapsible section state
-  document.addEventListener('toggle', e => {
-    const d = e.target;
-    if (d.matches && d.matches('details[data-sec]')) {
-      state.sections[d.dataset.sec] = d.open;
-      save();
-    }
-  }, true);
   document.addEventListener('submit', e => {
     const f = e.target.closest('#examProfile');
     if (!f) return;

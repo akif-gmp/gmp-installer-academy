@@ -20,6 +20,7 @@
   db.results = db.results || [];
   db.api = db.api || { baseUrl: '', token: '', lastSync: null };
   db.platformUrl = db.platformUrl || '';
+  db.certOverride = db.certOverride || false;
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} };
 
   let unlocked = true; // access control deferred to backend auth (per request: no restriction for now)
@@ -40,7 +41,8 @@
 
   /* hook for the learner app to feed results into analytics */
   A.adminHooks = {
-    recordResult(r) { db.results.push(r); save(); }
+    recordResult(r) { db.results.push(r); save(); },
+    certOverride: () => !!db.certOverride
   };
 
   /* ---------- helpers ---------- */
@@ -99,17 +101,17 @@ ${body}`;
       const s = installerScore(email);
       return `<tr>
         <td>${esc(u ? u.name || email : email)}<br><span style="font-weight:400;color:var(--muted);font-size:.76rem">${esc(email)}</span></td>
-        <td>${s.initial !== null ? Math.round(s.initial) + '%' : '<span style="color:var(--muted)">no exam yet</span>'}</td>
+        <td>${s.initial !== null ? Math.round(s.initial) + '%' : '<span style="color:var(--muted)">no cert yet</span>'}</td>
         <td>${s.avgLaunch !== null ? s.avgLaunch.toFixed(1) + ' / 10' : '<span style="color:var(--muted)">—</span>'} <span style="color:var(--muted);font-size:.76rem">(${s.launches} rated)</span></td>
         <td>${s.live !== null ? `<b class="score-pill ${s.live >= 80 ? 'ok' : s.live >= 60 ? 'mid' : 'low'}">${s.live}</b>` : '—'}</td>
         <td>${s.flags ? `<span class="score-pill low" title="tab switches + navigation attempts + second tabs during exams">${UI('flag', 11)} ${s.flags}</span>` : '<span style="color:var(--good)">clean</span>'}</td>
       </tr>`;
     }).join('');
-    if (!rows) rows = '<tr><td colspan="5" style="color:var(--muted)">No installers yet — invite people, or have someone take the readiness exam on this device.</td></tr>';
+    if (!rows) rows = '<tr><td colspan="5" style="color:var(--muted)">No installers yet — invite people, or have someone take the certification exam on this device.</td></tr>';
     return `
-<p class="lede" style="font-size:.92rem">Live score = 30% initial exam + 70% rolling launch-rating average (each launch rated 0–10, one point per metric). Integrity flags come from exam focused-session monitoring.</p>
+<p class="lede" style="font-size:.92rem">Live score = 30% certification score + 70% rolling launch-rating average (each launch rated 0–10, one point per metric). Integrity flags come from exam focused-session monitoring.</p>
 <div class="tablewrap"><table class="spec">
-<tr><th>Installer</th><th>Initial (exam)</th><th>Launch avg</th><th>Live score</th><th>Exam integrity</th></tr>${rows}</table></div>
+<tr><th>Installer</th><th>Initial (cert)</th><th>Launch avg</th><th>Live score</th><th>Exam integrity</th></tr>${rows}</table></div>
 <h3 style="font-size:1.05rem;margin-top:1.6em">The 10 rating metrics</h3>
 <div class="tablewrap"><table class="spec wraprow"><tr><th>#</th><th>Metric (1 point each)</th></tr>
 ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).join('')}</table></div>`;
@@ -120,7 +122,7 @@ ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).joi
     const rows = db.users.map((u, i) => `<tr>
       <td>${esc(u.name || '—')}</td><td>${esc(u.email)}</td><td><span class="badge ${u.role === 'admin' ? 'progress' : 'todo'}">${u.role}</span></td>
       <td>${esc(new Date(u.invitedAt).toLocaleDateString())}</td>
-      <td><a href="mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent('Your GMP Access Installer Academy invite')}&body=${encodeURIComponent('Hi ' + (u.name || '') + ',\n\nYou\'ve been invited to the GMP Access Installer Academy (' + u.role + ').\n\nOpen the platform here: ' + inviteUrl + '\n\nWork through the 14 modules, then take the readiness exam. See you in the field!')}" class="btn small secondary">${UI('mail', 13)} Send invite</a>
+      <td><a href="mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent('Your GMP Access Installer Academy invite')}&body=${encodeURIComponent('Hi ' + (u.name || '') + ',\n\nYou\'ve been invited to the GMP Access Installer Academy (' + u.role + ').\n\nOpen the platform here: ' + inviteUrl + '\n\nWork through the 14 modules, then take the certification exam. See you in the field!')}" class="btn small secondary">${UI('mail', 13)} Send invite</a>
       <button class="btn small ghost" data-ad="deluser" data-i="${i}">remove</button></td>
     </tr>`).join('') || '<tr><td colspan="5" style="color:var(--muted)">No one invited yet.</td></tr>';
     return `
@@ -137,7 +139,7 @@ ${A.METRICS.map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m[1])}</td></tr>`).joi
   function tabAnalytics() {
     const rows = db.results.slice().reverse().map(r => `<tr>
       <td>${esc(r.name || r.email || 'anonymous')}</td>
-      <td>${r.kind === 'exam' ? '<b>Readiness exam</b>' : 'Check · ' + esc(r.module || '')}</td>
+      <td>${r.kind === 'exam' ? '<b>Certification</b>' : 'Check · ' + esc(r.module || '')}</td>
       <td>${r.score}/${r.total} (${Math.round(r.pct)}%)</td>
       <td>${esc(new Date(r.ts).toLocaleString())}</td>
       <td>${r.integrity ? integrityChip(r.integrity) : '<span style="color:var(--muted)">n/a</span>'}</td>
@@ -223,6 +225,9 @@ ${issues.length ? `<div class="callout ${issues.some(i => i.installerRelated) ? 
   ${input('platformUrl', 'https://…link where the academy is hosted', db.platformUrl, 'url')}
   <button class="btn accent">Save</button>
 </form>
+<h3 style="font-size:1.05rem;margin-top:1.6em">Certification eligibility</h3>
+<label class="rate-row" style="max-width:560px"><input type="checkbox" id="certOverrideToggle"${db.certOverride ? ' checked' : ''}> Bypass the eligibility gate — allow the certification exam before all modules are complete <span style="color:var(--muted);font-weight:400">(testing only)</span></label>
+<p style="font-size:.8rem;color:var(--muted)">Off by default: installers must finish all 14 modules to unlock certification. Turn on only to QA the exam flow.</p>
 <h3 style="font-size:1.05rem;margin-top:1.6em">Data</h3>
 <p><button class="btn secondary small" data-ad="export">${UI('download', 13)} Export admin data (JSON)</button>
 ${db.sample ? `<button class="btn secondary small" data-ad="clearseed" style="margin-left:8px">${UI('close', 12)} Clear sample data</button>` : ''}</p>
@@ -308,8 +313,12 @@ ${db.sample ? '<p style="font-size:.78rem;color:var(--muted)">This console is cu
     }
   });
 
-  /* live score preview while rating */
+  /* live score preview while rating + cert-override toggle */
   document.addEventListener('change', e => {
+    if (e.target && e.target.id === 'certOverrideToggle') {
+      db.certOverride = e.target.checked; save();
+      return;
+    }
     const f = e.target.closest('form[data-ad="rate"]');
     if (!f) return;
     let score = 0;
